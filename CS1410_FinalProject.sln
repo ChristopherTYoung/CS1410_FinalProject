@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FightGame", "FightGame\FightGame.csproj", "{3D85D9BC-8F8F-4D57-948B-DD43F46E5B76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FightGame.Main", "FightGame.Main\FightGame.Main.csproj", "{67088EE1-1C7C-4BD1-A19F-453455BBE5F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FightGame.Test", "FightGame.Test\FightGame.Test.csproj", "{83ACCF4D-D18F-4B8E-B7C9-A870FF659FA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3D85D9BC-8F8F-4D57-948B-DD43F46E5B76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D85D9BC-8F8F-4D57-948B-DD43F46E5B76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D85D9BC-8F8F-4D57-948B-DD43F46E5B76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D85D9BC-8F8F-4D57-948B-DD43F46E5B76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67088EE1-1C7C-4BD1-A19F-453455BBE5F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67088EE1-1C7C-4BD1-A19F-453455BBE5F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67088EE1-1C7C-4BD1-A19F-453455BBE5F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67088EE1-1C7C-4BD1-A19F-453455BBE5F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83ACCF4D-D18F-4B8E-B7C9-A870FF659FA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83ACCF4D-D18F-4B8E-B7C9-A870FF659FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83ACCF4D-D18F-4B8E-B7C9-A870FF659FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83ACCF4D-D18F-4B8E-B7C9-A870FF659FA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
