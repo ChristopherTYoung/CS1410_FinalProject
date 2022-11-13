@@ -1,7 +1,8 @@
 public class Summoner : Player
 {
-    public Summoner()
+    public Summoner(string name)
     {
+        Name = name;
         Damage = 18;
         Defense = 10;
 

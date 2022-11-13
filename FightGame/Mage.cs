@@ -1,7 +1,8 @@
 public class Mage : Player
 {
-    public Mage()
+    public Mage(string name)
     {
+        Name = name;
         Damage = 19;
         Defense = 9;
 

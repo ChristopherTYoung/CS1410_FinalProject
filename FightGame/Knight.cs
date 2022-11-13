@@ -1,8 +1,9 @@
 
 public class Knight : Player
 {
-    public Knight()
+    public Knight(string name)
     {
+        Name = name;
         Damage = 17;
         Defense = 20;
 

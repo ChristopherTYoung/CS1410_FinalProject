@@ -1,7 +1,8 @@
 public class Archer : Player
 {
-    public Archer()
+    public Archer(string name)
     {
+        Name = name;
         Damage = 14;
         Defense = 10;
 
