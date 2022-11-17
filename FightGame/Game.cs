@@ -1,14 +1,14 @@
 
 public class Game
 {
-    public Player selectedClass;
+    public Player player = new Player();
     public static Player SelectClass(string inputClass, string inputName)
     {
         Game game = new Game();
 
         try
         {
-            game.selectedClass = inputClass switch
+            game.player = inputClass switch
             {
                 "Archer" => new Archer(inputName),
                 "Assassin" => new Assassin(inputName),
@@ -20,15 +20,30 @@ public class Game
                 "Warrior" => new Warrior(inputName),
                 _ => throw new Exception()
             };
-            game.selectedClass.ToString().PrintEachLetter();
+            game.player.ToString().PrintEachLetter();
         }
         catch (Exception InvalidInput)
         {
             "Not a valid class type. Try again".PrintEachLetter();
-
+            "Select your class".PrintEachLetter();
+            var userInput = Console.ReadLine();
+            SelectClass(userInput!, inputName);
+            System.Console.WriteLine(game.player);
         }
 
+        return game.player;
+    }
+    public static void PlayerAttack(int damage)
+    {
+        int damageDone;
+        Random rnd = new Random();
+        var doesCrit = rnd.CritChance();
 
-        return game.selectedClass;
+        if(doesCrit)
+            damageDone = rnd.CriticalHit(damage);
+        else
+            damageDone = damage;
+        
+        System.Console.WriteLine(damageDone);
     }
 }
