@@ -8,11 +8,13 @@ public abstract class Enemy
 
 
     // Enemy fought will be randomly generated? Possiably
-
+    //Random generator = GenerateRandom()
+    //1 = SkeletonKnight, 2 = LichKing, 3 = SpearUser, 4 = Witch
     public Enemy()
     {
 
     }
 
     // Enemy will do a random attack based on a random generator, goes with the damage prop, could crit.
+
 }
