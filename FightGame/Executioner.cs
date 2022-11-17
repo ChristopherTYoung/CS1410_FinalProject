@@ -1,8 +1,9 @@
 
 public class Executioner : Player
 {
-    public Executioner()
+    public Executioner(string name)
     {
+        Name = name;
         Damage = 15;
         Defense = 12;
 

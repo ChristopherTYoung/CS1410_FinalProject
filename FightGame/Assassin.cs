@@ -1,7 +1,8 @@
 public class Assassin : Player
 {
-    public Assassin(int damage, int defense)
+    public Assassin(string name)
     {
+        Name = name;
         Damage = 12;
         Defense = 12;
 

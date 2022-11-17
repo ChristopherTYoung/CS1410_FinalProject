@@ -1,13 +1,13 @@
 # FightGame
 
-## Player
+## Player - Chris
     -Player has a base Damage, Defense, Health, and Weapon based on class. Stats can be improved later in the game
     -Player has a Name which will be entered in before the game starts
         -If the Name entered is a previously saved Username, the game will start the player with the stats and money from before
     -Player will have a set amount of money which they can use at the shop
     -Player will have a chance to do a random amount of critical hit damage
     -Player will have attacks that they can choose from
-## Enemy
+## Enemy - Ricardo
     -Enemy will have a Damage, Defense, Health, and Weapon.
     -Enemy will have a set Name
     -Enemy fought will be randomly generated?
