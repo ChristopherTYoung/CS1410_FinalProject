@@ -24,3 +24,18 @@
     -Game will display player and enemy health
     -Game will determine amount of damage done to an enemy or the player
     -Set Difficulties?
+
+## ToDo List
+    -Have multiple classes for the players, enemies and the game builder
+    -Make a struct 
+    -Enumerated type
+    -Use inheritence, Use it with players to get their class properties, same with enemies
+    -polymorphism
+    -A second polymorphism
+    -Throwing exceptions and catching, Use with user inputing their player class so they don't input anything  invalid
+    -own generic datatype
+    -Properties, Use in player classes to give them damage, health, attack and defense, same with enemies
+    -static member function, Shop items costs 
+    -Interface
+    -Second interface
+    -two different built in generic collection types
