@@ -28,7 +28,7 @@
 ## ToDo List
     -Have multiple classes for the players, enemies and the game builder
     -Make a struct 
-    -Enumerated type
+    -Enumerated type, Use to select which player class the user wants to use.
     -Use inheritence, Use it with players to get their class properties, same with enemies
     -polymorphism
     -A second polymorphism
