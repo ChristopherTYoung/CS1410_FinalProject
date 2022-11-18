@@ -25,17 +25,31 @@
     -Game will determine amount of damage done to an enemy or the player
     -Set Difficulties?
 
-## ToDo List
-    -Have multiple classes for the players, enemies and the game builder
-    -Make a struct 
-    -Enumerated type, Use to select which player class the user wants to use.
-    -Use inheritence, Use it with players to get their class properties, same with enemies
+## 15 Elements
+    -Classes
+        -create a player class
+        -create an enemy class
+        -create a game class that runs through the game
+        -create a shop class, where players can purchase upgrades
+    -Struct
+        -Make a random critical hit generator struct
+    -Enumerated type
+        -Create an enum type to select an attack
+    -Inheritence
+        -the different classes will inherit from player. Whatever class the user selects, will be his class and the user will have the stats
+        of the class selected
     -polymorphism
+        -override the toString method to allow us to print the players stats in a specific format
     -A second polymorphism
-    -Throwing exceptions and catching, Use with user inputing their player class so they don't input anything  invalid
-    -own generic datatype
-    -Properties, Use in player classes to give them damage, health, attack and defense, same with enemies
-    -static member function, Shop items costs 
+    -Throwing exceptions and catching
+        -will throw and catch an exception if the player selects an invalid class
+    -own generic datatype. 
+    -Properties
+        -Player classes have damage, health, and defense properties, same with enemies
+    -static member function
+        -Shop items costs
+        -PlayerAttack
+        -EnemyAttack
     -Interface
     -Second interface
     -two different built in generic collection types
