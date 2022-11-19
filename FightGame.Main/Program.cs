@@ -12,7 +12,13 @@ public class Program
         var inputClass = Console.ReadLine();
 
         Player player = Game.SelectClass(inputClass!, inputName!);
+        if (player == null)
+        {
+            "Select your class".PrintEachLetter();
+            inputClass = Console.ReadLine();
+            player = Game.SelectClass(inputClass!, inputName!);
+        }
 
-        Game.PlayerAttack(10);
+        Game.PlayerAttack(player.Damage);
     }
 }

@@ -22,13 +22,14 @@ public class Game
             };
             game.player.ToString().PrintEachLetter();
         }
-        catch (Exception InvalidInput)
+        catch (Exception e)
         {
             "Not a valid class type. Try again".PrintEachLetter();
             "Select your class".PrintEachLetter();
-            var userInput = Console.ReadLine();
-            SelectClass(userInput!, inputName);
-            System.Console.WriteLine(game.player);
+            return null;
+            // var userInput = Console.ReadLine();
+            // SelectClass(userInput!, inputName);
+            // System.Console.WriteLine(game.player);
         }
 
         return game.player;

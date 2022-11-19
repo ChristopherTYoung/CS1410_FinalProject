@@ -1,11 +1,11 @@
 ﻿
 public class Player
 {
-    protected string Name { get; init; }
-    protected int Damage { get; init; }
-    protected int Defense { get; init; }
-    protected string? Description { get; init; }
-    protected string? Weapon { get; init; }
+    public string Name { get; init; }
+    public int Damage { get; init; }
+    public int Defense { get; init; }
+    public string? Description { get; init; }
+    public string? Weapon { get; init; }
 
     public override string ToString()
     {
