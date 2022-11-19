@@ -25,7 +25,7 @@
     -Game will determine amount of damage done to an enemy or the player
     -Set Difficulties?
 
-## 15 Elements
+## Todo List
     -Classes
         -create a player class
         -create an enemy class
