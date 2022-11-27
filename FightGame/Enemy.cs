@@ -12,9 +12,14 @@ public abstract class Enemy
     //1 = SkeletonKnight, 2 = LichKing, 3 = SpearUser, 4 = Witch
     public Enemy()
     {
-
     }
 
+    public static string GetEnemy()
+    {
+        Random random = new Random(4);
+        //string CurrentEnemy = random.Next();
+        return "";
+    }
     // Enemy will do a random attack based on a random generator, goes with the damage prop, could crit.
 
 }

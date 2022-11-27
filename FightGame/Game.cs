@@ -70,8 +70,8 @@ public class Game
         }
     }
 
-    public static string Shop()
+    public static List<string> Shop()
     {
-        return "";
+        return new List<string> {} ;
     }
 }
