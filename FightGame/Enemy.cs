@@ -1,10 +1,10 @@
 public abstract class Enemy
 {
-    protected string? Name { get; init; }
-    protected int Damage { get; init; }
-    protected int Defense { get; init; }
-    protected int Health { get; init; }
-    protected string? Weapon { get; init; }
+    public string? Name { get; init; }
+    public int Damage { get; init; }
+    public int Defense { get; init; }
+    public int Health { get; init; }
+    public string? Weapon { get; init; }
 
 
     // Enemy fought will be randomly generated? Possiably

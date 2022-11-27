@@ -34,17 +34,26 @@ public class Game
 
         return game.player;
     }
-    public static void PlayerAttack(int damage)
+    public static int PlayerAttack(int damage)
     {
         int damageDone;
         Random rnd = new Random();
         var doesCrit = rnd.CritChance();
 
         if(doesCrit)
-            damageDone = rnd.CriticalHit(damage);
+            return damageDone = rnd.CriticalHit(damage);
         else
-            damageDone = damage;
-        
-        System.Console.WriteLine(damageDone);
+            return damageDone = damage;
+    }
+    public static void Round(Player player, Enemy enemy)
+    {
+        var gameIsStillGoing = true;
+        while(gameIsStillGoing)
+        {
+            System.Console.WriteLine("Choose your attack");
+            var input = Console.ReadLine();
+            
+
+        }
     }
 }
