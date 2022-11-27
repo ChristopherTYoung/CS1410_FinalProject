@@ -45,6 +45,19 @@ public class Game
         else
             return damageDone = damage;
     }
+
+    public static int EnemyAttack(int damage)
+    {
+        int damageDone;
+        Random rnd = new Random();
+        var doesCrit = rnd.CritChance();
+
+        if(doesCrit)
+            return damageDone = rnd.CriticalHit(damage);
+        else
+            return damageDone = damage;
+    }
+
     public static void Round(Player player, Enemy enemy)
     {
         var gameIsStillGoing = true;
@@ -55,5 +68,10 @@ public class Game
             
 
         }
+    }
+
+    public static string Shop()
+    {
+        return "";
     }
 }
