@@ -60,6 +60,7 @@ public class Game
 
     public static void Round(Player player, Enemy enemy)
     {
+        enemy = Enemy.GetEnemy();
         var gameIsStillGoing = true;
         while(gameIsStillGoing)
         {

@@ -1,6 +1,6 @@
 public class SpearUser : Enemy
 {
-    public SpearUser(string name)
+    public SpearUser()
     {
         Name = "Uldyr The Spear Champ";
         Damage = 16;

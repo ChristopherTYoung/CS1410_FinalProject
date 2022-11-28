@@ -1,7 +1,7 @@
 public class LichKing : Enemy
 {
     // Could Spawn Weaker SkeletonKnights?
-    public LichKing(string name)
+    public LichKing()
     {
         Name = "Gorn The LichKing";
         Damage = 18;

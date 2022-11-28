@@ -1,6 +1,6 @@
 public class Witch : Enemy
 {
-    public Witch(string name)
+    public Witch()
     {
         Name = "Viki the Damned";
         Damage = 19;

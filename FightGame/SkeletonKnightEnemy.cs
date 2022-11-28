@@ -1,6 +1,6 @@
 public class SkeletonKnight : Enemy
 {
-    public SkeletonKnight(string name)
+    public SkeletonKnight()
     {
         Name = "Skyla the beheaded";
         Damage = 17;
