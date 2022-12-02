@@ -7,8 +7,6 @@ public class Player
     public int Health { get; init; } = 100;
     public string? Description { get; init; }
     public string? Weapon { get; init; }
-    public int UltimateAttacks { get; set; } = 1;
-    public int SpecialAttacks { get; set; } = 3;
     public enum Moves
     {
         Normal = 1,
