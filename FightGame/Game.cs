@@ -2,6 +2,13 @@
 public class Game
 {
     public Player player = new Player();
+
+    public static void MainMenu()
+    {
+        "Welcome to Fight Game".PrintEachLetter();
+        "Select a class".PrintEachLetter();
+        
+    }
     public static Player SelectClass(string inputClass, string inputName)
     {
         Game game = new Game();
@@ -22,28 +29,80 @@ public class Game
             };
             game.player.ToString().PrintEachLetter();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             "Not a valid class type. Try again".PrintEachLetter();
             "Select your class".PrintEachLetter();
-            return null;
-            // var userInput = Console.ReadLine();
-            // SelectClass(userInput!, inputName);
-            // System.Console.WriteLine(game.player);
+            var input = Console.ReadLine();
+            return SelectClass(input, inputName);
         }
 
         return game.player;
     }
-    public static int PlayerAttack(int damage)
+    public static int PlayerTurn(Player player, Enemy enemy)
     {
-        int damageDone;
         Random rnd = new Random();
         var doesCrit = rnd.CritChance();
+        try
+        {
+            System.Console.WriteLine("Make your move (Dodge, Normal, Special, Ultimate)");
+            var input = Console.ReadLine();
+            var move = input switch
+            {
+                "Dodge" => Player.Moves.Dodge,
+                "Normal" => Player.Moves.Normal,
+                "Special" => Player.Moves.Special,
+                "Ultimate" => Player.Moves.Ultimate,
+                _ => throw new Exception()
+            };
+            if (move == Player.Moves.Special && player.SpecialAttacks > 0)
+            {
+                player.SpecialAttacks -= 1;
+                if (player.Damage > enemy.Defense && doesCrit)
+                    return (player.Damage * (int)move) + rnd.CriticalHit(player.Damage) - enemy.Defense;
+                else if (player.Damage > enemy.Defense && doesCrit == false)
+                    return (player.Damage * (int)move) - enemy.Defense;
+                else
+                    return player.Damage;
+            }
+            else if (move == Player.Moves.Special && player.SpecialAttacks == 0)
+            {
+                "You don't have any special attacks".PrintEachLetter();
+                return PlayerTurn(player, enemy);
+            }
+            else if (move == Player.Moves.Ultimate && player.UltimateAttacks > 0)
+            {
+                player.UltimateAttacks -= 1;
+                if (player.Damage > enemy.Defense && doesCrit)
+                    return (player.Damage * (int)move) + rnd.CriticalHit(player.Damage) - enemy.Defense;
+                else if (player.Damage > enemy.Defense && doesCrit == false)
+                    return (player.Damage * (int)move) - enemy.Defense;
+                else
+                    return player.Damage;
+            }
+            else if (move == Player.Moves.Ultimate && player.UltimateAttacks == 0)
+            {
+                "You don't have any ultimate attacks".PrintEachLetter();
+                return PlayerTurn(player, enemy);
+            }
+            else if (move == Player.Moves.Dodge)
+                return 0;
+            else
+            {
+                if (player.Damage > enemy.Defense && doesCrit)
+                    return (player.Damage * (int)move) + rnd.CriticalHit(player.Damage) - enemy.Defense;
+                else if (player.Damage > enemy.Defense && doesCrit == false)
+                    return (player.Damage * (int)move) - enemy.Defense;
+                else
+                    return player.Damage;
+            }
+        }
+        catch (Exception)
+        {
+            System.Console.WriteLine("Not a valid move. Try again");
+            return PlayerTurn(player, enemy);
+        }
 
-        if(doesCrit)
-            return damageDone = rnd.CriticalHit(damage);
-        else
-            return damageDone = damage;
     }
 
     public static int EnemyAttack(int damage)
@@ -52,7 +111,7 @@ public class Game
         Random rnd = new Random();
         var doesCrit = rnd.CritChance();
 
-        if(doesCrit)
+        if (doesCrit)
             return damageDone = rnd.CriticalHit(damage);
         else
             return damageDone = damage;
@@ -61,18 +120,18 @@ public class Game
     public static void Round(Player player, Enemy enemy)
     {
         enemy = Enemy.GetEnemy();
-        var gameIsStillGoing = true;
-        while(gameIsStillGoing)
+        var roundIsStillGoing = true;
+        while (roundIsStillGoing)
         {
-            System.Console.WriteLine("Choose your attack");
-            var input = Console.ReadLine();
-            
+            var damage = PlayerTurn(player, enemy);
 
+            if (player.Health <= 0 || enemy.Health <= 0)
+                roundIsStillGoing = false;
         }
     }
 
     public static List<string> Shop()
     {
-        return new List<string> {} ;
+        return new List<string> { };
     }
 }
