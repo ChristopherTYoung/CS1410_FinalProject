@@ -11,6 +11,7 @@ public class Game
         "Select a class".PrintEachLetter();
         var inputClass = Console.ReadLine();
         SelectClass(inputClass, inputName);
+        
 
     }
     public static Player SelectClass(string inputClass, string inputName)
