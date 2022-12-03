@@ -95,7 +95,7 @@ public class Game
             else
             {
                 if (player.Damage > enemy.Defense && doesCrit)
-                    return ((player.Damage- enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage) ;
+                    return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage);
                 else if (player.Damage > enemy.Defense && doesCrit == false)
                     return ((player.Damage - enemy.Defense) * (int)move);
                 else
@@ -110,20 +110,24 @@ public class Game
 
     }
 
-    public static int EnemyAttack(int damage)
+    public static int EnemyAttack(Player player, Enemy enemy)
     {
-        int damageDone;
         Random rnd = new Random();
         var doesCrit = rnd.CritChance();
 
-        if (doesCrit)
-            return damageDone = rnd.CriticalHit(damage);
-        else
-            return damageDone = damage;
+        if (enemy.Damage > player.Defense && doesCrit)
+            return ((enemy.Damage - player.Defense) + rnd.CriticalHit(enemy.Damage));
+        else if (enemy.Damage > player.Defense && doesCrit == false)
+            return (enemy.Damage - player.Defense);
+        else if(enemy.Damage < player.Defense)
+            return 0;
+        return 0;
     }
 
     public static void Round(Player player, Enemy enemy)
     {
+        int enemyencounters = 0;
+        int shopencounters = 0;
         enemy = Enemy.GetEnemy();
         var enemyHealth = enemy.Health;
         var playerHealth = player.Health;
@@ -132,14 +136,29 @@ public class Game
         {
             var damage = PlayerTurn(player, enemy);
             enemyHealth -= damage;
+            
+            var enemydamage = EnemyAttack(player, enemy);
+            playerHealth -= damage;
+
 
             if (playerHealth <= 0 || enemyHealth <= 0)
                 roundIsStillGoing = false;
         }
+        if (enemyencounters == enemyencounters + 2)
+        {
+            Shop();
+            shopencounters++;
+        }
+        enemyencounters++;
+
     }
 
     public static List<string> Shop()
     {
+        "Welcome to the Shop".PrintEachLetter();
+        "We have quite a selection for you to choose from".PrintEachLetter();
+        "We have health and dodge potions, you can also upgrade your abilities".PrintEachLetter();
+        //Make items a base value. Enemy will drop 10 gold each. After each encounter of the shop both enemy gold and Shop prices increase by 1/4 their original.
         return new List<string> { };
     }
 }
