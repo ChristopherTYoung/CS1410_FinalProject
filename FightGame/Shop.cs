@@ -6,9 +6,4 @@ public class Shop
     // Items, Set amount of upgrade damage?
     // Items: potions, different weapons such as staffs, swords, spears, etc. , armor (if we wanna implement that), stat upgrades?
     //Make it a list Generic collection
-
-    public static List<string> Shopping()
-    {
-        return new List<string>();
-    }
 }

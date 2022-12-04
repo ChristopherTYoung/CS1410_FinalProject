@@ -217,7 +217,6 @@ public class Game
             SelectClass(input!, game.player.Name);
         }
         enemyencounters++;
-
     }
 
     public static List<string> Shop()
@@ -226,6 +225,9 @@ public class Game
         "We have quite a selection for you to choose from".PrintEachLetter();
         "We have health and dodge potions, you can also upgrade your abilities".PrintEachLetter();
         //Make items a base value. Enemy will drop 10 gold each. After each encounter of the shop both enemy gold and Shop prices increase by 1/4 their original.
-        return new List<string> { };
+        //Potions will be 10 gold each (base value), upgrades will be (20 base value)
+        List<string> ItemsBought = new List<string> ();
+
+        return ItemsBought;
     }
 }
