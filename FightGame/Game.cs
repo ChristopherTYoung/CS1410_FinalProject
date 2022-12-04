@@ -5,22 +5,50 @@ public class Game
 
     public static void MainMenu()
     {
+        PlayerFileService file = new PlayerFileService();
+        var game = new Game();
+        IPlayer player = new Player();
         "Welcome to Fight Game".PrintEachLetter();
         "Create a username or if you already have one enter your username".PrintEachLetter();
         var inputName = Console.ReadLine();
-        "Select a class".PrintEachLetter();
-        var inputClass = Console.ReadLine();
-        SelectClass(inputClass, inputName);
-        
+        if (File.Exists($"../Players/{inputName}.csv"))
+        {
+            player = file.ReadPlayerSavedData(inputName!);
+            System.Console.WriteLine(player);
+        }
+        else
+        {
+            "Select a class".PrintEachLetter();
+            var inputClass = Console.ReadLine();
+            player = SelectClass(inputClass!, inputName!);
+        }
+        Inventory inventory = new Inventory();
+        var gameIsStillGoing = true;
+        while (gameIsStillGoing)
+        {
+            System.Console.WriteLine("| Play\n| Quit");
+            var input = Console.ReadLine();
+
+            if (input == "Play")
+                Round(player);
+            else if (input == "Quit")
+            {
+                file.WritePlayerSavedData(player);
+                // PlayerFileService.WriteInventorySavedData(player.Name, inventory);
+                gameIsStillGoing = false;
+            }
+            else
+                System.Console.WriteLine("Not a valid option. Try again");
+        }
 
     }
     public static Player SelectClass(string inputClass, string inputName)
     {
         Game game = new Game();
-
+        Player player = new Player();
         try
         {
-            game.player = inputClass switch
+            player = inputClass switch
             {
                 "Archer" => new Archer(inputName),
                 "Assassin" => new Assassin(inputName),
@@ -32,19 +60,19 @@ public class Game
                 "Warrior" => new Warrior(inputName),
                 _ => throw new Exception()
             };
-            game.player.ToString().PrintEachLetter();
+            player.ToString().PrintEachLetter();
         }
         catch (Exception)
         {
             "Not a valid class type. Try again".PrintEachLetter();
             "Select your class".PrintEachLetter();
             var input = Console.ReadLine();
-            return SelectClass(input, inputName);
+            return SelectClass(input!, inputName);
         }
 
-        return game.player;
+        return player;
     }
-    public static int PlayerTurn(Player player, Enemy enemy)
+    public static int PlayerTurn(IPlayer player, Enemy enemy)
     {
         Random rnd = new Random();
         var doesCrit = rnd.CritChance();
@@ -64,11 +92,17 @@ public class Game
             {
                 Inventory.SpecialAttacks -= 1;
                 if (player.Damage > enemy.Defense && doesCrit)
+                {
                     return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage);
+                }
                 else if (player.Damage > enemy.Defense && doesCrit == false)
+                {
                     return ((player.Damage - enemy.Defense) * (int)move);
+                }
                 else
+                {
                     return player.Damage;
+                }
             }
             else if (move == Player.Moves.Special && Inventory.SpecialAttacks == 0)
             {
@@ -110,7 +144,7 @@ public class Game
 
     }
 
-    public static int EnemyAttack(Player player, Enemy enemy)
+    public static int EnemyAttack(IPlayer player, Enemy enemy)
     {
         Random rnd = new Random();
         var doesCrit = rnd.CritChance();
@@ -119,35 +153,68 @@ public class Game
             return ((enemy.Damage - player.Defense) + rnd.CriticalHit(enemy.Damage));
         else if (enemy.Damage > player.Defense && doesCrit == false)
             return (enemy.Damage - player.Defense);
-        else if(enemy.Damage < player.Defense)
+        else if (enemy.Damage < player.Defense)
             return 0;
         return 0;
     }
 
-    public static void Round(Player player, Enemy enemy)
+    public static void Round(IPlayer player)
     {
+        Game game = new Game();
+        System.Console.WriteLine(player.Name);
         int enemyencounters = 0;
         int shopencounters = 0;
-        enemy = Enemy.GetEnemy();
+
+        var enemy = Enemy.GetEnemy();
+
         var enemyHealth = enemy.Health;
         var playerHealth = player.Health;
         var roundIsStillGoing = true;
+        var playerWins = true;
+
+        System.Console.WriteLine($"You are fighting {enemy.Name}");
+
         while (roundIsStillGoing)
         {
             var damage = PlayerTurn(player, enemy);
+            System.Console.WriteLine(damage);
             enemyHealth -= damage;
-            
-            var enemydamage = EnemyAttack(player, enemy);
-            playerHealth -= damage;
+            System.Console.WriteLine($"Player Health: {playerHealth} | Enemy Health: {enemyHealth}");
 
-
-            if (playerHealth <= 0 || enemyHealth <= 0)
+            if (enemyHealth <= 0)
+            {
+                playerWins = true;
                 roundIsStillGoing = false;
+            }
+
+            var enemydamage = EnemyAttack(player, enemy);
+            System.Console.WriteLine(enemydamage);
+            playerHealth -= enemydamage;
+            System.Console.WriteLine($"Player Health: {playerHealth} | Enemy Health: {enemyHealth}");
+            if (playerHealth <= 0)
+            {
+                playerWins = false;
+                roundIsStillGoing = false;
+            }
+
+
         }
-        if (enemyencounters == enemyencounters + 2)
+        if (playerWins)
+        {
+            System.Console.WriteLine("Player won");
+        }
+        if (enemyencounters == enemyencounters + 2 && playerWins)
         {
             Shop();
             shopencounters++;
+        }
+        else if (playerWins == false)
+        {
+            "Game Over".PrintEachLetter();
+            "Select a class".PrintEachLetter();
+            var input = Console.ReadLine();
+
+            SelectClass(input!, game.player.Name);
         }
         enemyencounters++;
 

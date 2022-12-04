@@ -5,7 +5,7 @@ public class Assassin : Player
         Name = name;
         Damage = 12;
         Defense = 12;
-
+        Health = 100;
         Weapon = "Throwing Knives";
         Description = "The assassin uses knives that can be used as throwing knives. The assassin has incredible speed that allows him to eliminate enemies fast and efficiently. Starts out with a few healing potions";
     }

@@ -3,17 +3,18 @@ public class Program
 {
     static void Main()
     {
-        "Welcome to FightGame.".PrintEachLetter();
-        "What will your username be?".PrintEachLetter();
+        // "Welcome to FightGame.".PrintEachLetter();
+        // "What will your username be?".PrintEachLetter();
 
-        var inputName = Console.ReadLine();
+        // var inputName = Console.ReadLine();
 
-        "Select your class".PrintEachLetter();
-        var inputClass = Console.ReadLine();
+        // "Select your class".PrintEachLetter();
+        // var inputClass = Console.ReadLine();
 
-        Player player = Game.SelectClass(inputClass!, inputName!);
-        Enemy enemy = new LichKing();
+        // Player player = Game.SelectClass(inputClass!, inputName!);
+        // Enemy enemy = new LichKing();
 
-        System.Console.WriteLine(Game.PlayerTurn(player, enemy));
+        // System.Console.WriteLine(Game.PlayerTurn(player, enemy));
+        Game.MainMenu();
     }
 }
