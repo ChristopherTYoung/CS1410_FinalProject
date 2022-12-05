@@ -1,9 +1,7 @@
-public class Shop
+public class shop
 {
-    public static int Money { get; set; }
-    public static int UpgradeDamage { get; set; }
-    // public static List<> Items { get; set;}
-    // Items, Set amount of upgrade damage?
-    // Items: potions, different weapons such as staffs, swords, spears, etc. , armor (if we wanna implement that), stat upgrades?
-    //Make it a list Generic collection
+    public static string DodgePotion { get; set; }
+    public static string AttackPotion { get; set; }
+    public static string HealthBoost { get; set; }
+    public static string AttackBoost { get; set; }
 }

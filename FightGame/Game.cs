@@ -157,13 +157,11 @@ public class Game
             return 0;
         return 0;
     }
-
+    int Gold = 0;
     public static void Round(IPlayer player)
     {
         Game game = new Game();
         System.Console.WriteLine(player.Name);
-        int enemyencounters = 0;
-        int shopencounters = 0;
 
         var enemy = Enemy.GetEnemy();
 
@@ -183,8 +181,10 @@ public class Game
 
             if (enemyHealth <= 0)
             {
+                Player.Money = Player.Money + 5;
                 playerWins = true;
                 roundIsStillGoing = false;
+                Shop(Player.Money);
             }
 
             var enemydamage = EnemyAttack(player, enemy);
@@ -193,6 +193,7 @@ public class Game
             System.Console.WriteLine($"Player Health: {playerHealth} | Enemy Health: {enemyHealth}");
             if (playerHealth <= 0)
             {
+
                 playerWins = false;
                 roundIsStillGoing = false;
             }
@@ -203,11 +204,6 @@ public class Game
         {
             System.Console.WriteLine("Player won");
         }
-        if (enemyencounters == enemyencounters + 2 && playerWins)
-        {
-            Shop();
-            shopencounters++;
-        }
         else if (playerWins == false)
         {
             "Game Over".PrintEachLetter();
@@ -216,17 +212,40 @@ public class Game
 
             SelectClass(input!, game.player.Name);
         }
-        enemyencounters++;
     }
 
-    public static List<string> Shop()
+    public static List<string> Shop(int Gold)
     {
         "Welcome to the Shop".PrintEachLetter();
         "We have quite a selection for you to choose from".PrintEachLetter();
         "We have health and dodge potions, you can also upgrade your abilities".PrintEachLetter();
+        "What would you like to buy".PrintEachLetter();
+        List<string> ItemsBought = new List<string>();
+        var input = Console.ReadLine();
+        if(input == "Attack Boost" && Gold >= 10)
+        {
+            Gold -= 10;
+            ItemsBought.Add("AttackBoost");
+            // Player NewPlayerDamage = inputClass.Damage +  2;
+        }
+
+        if (input == "HealthBoost")
+        {
+            Gold -= 5;
+            ItemsBought.Add("Health Boost");
+        }
+        if (input == "DodgePotion")
+        {
+            Gold -= 5;
+            ItemsBought.Add("Dodge Potion");
+        }
+        if (input == "Attack Potion")
+        {
+            Gold -= 5;
+            ItemsBought.Add("AttackPotion");
+        }
         //Make items a base value. Enemy will drop 10 gold each. After each encounter of the shop both enemy gold and Shop prices increase by 1/4 their original.
         //Potions will be 10 gold each (base value), upgrades will be (20 base value)
-        List<string> ItemsBought = new List<string> ();
 
         return ItemsBought;
     }

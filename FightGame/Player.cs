@@ -13,6 +13,8 @@ public class Player : IPlayer
     public string? Description { get; init; }
     [Index(5)]
     public string? Weapon { get; init; }
+    [Index(6)]
+    public static int Money { get; set; }
     public enum Moves
     {
         Normal = 1,
