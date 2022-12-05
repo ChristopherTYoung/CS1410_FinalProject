@@ -1,85 +1,31 @@
 
 public class Game
 {
-    public Player player = new Player();
 
-    public static void MainMenu()
-    {
-        PlayerFileService file = new PlayerFileService();
-        var game = new Game();
-        IPlayer player = new Player();
-        "Welcome to Fight Game".PrintEachLetter();
-        "Create a username or if you already have one enter your username".PrintEachLetter();
-        var inputName = Console.ReadLine();
-        if (File.Exists($"../Players/{inputName}.csv"))
-        {
-            player = file.ReadPlayerSavedData(inputName!);
-            System.Console.WriteLine(player);
-        }
-        else
-        {
-            "Select a class".PrintEachLetter();
-            var inputClass = Console.ReadLine();
-            player = SelectClass(inputClass!, inputName!);
-        }
-        Inventory inventory = new Inventory();
-        var gameIsStillGoing = true;
-        while (gameIsStillGoing)
-        {
-            System.Console.WriteLine("| Play\n| Quit");
-            var input = Console.ReadLine();
-
-            if (input == "Play")
-                Round(player);
-            else if (input == "Quit")
-            {
-                file.WritePlayerSavedData(player);
-                // PlayerFileService.WriteInventorySavedData(player.Name, inventory);
-                gameIsStillGoing = false;
-            }
-            else
-                System.Console.WriteLine("Not a valid option. Try again");
-        }
-
-    }
     public static Player SelectClass(string inputClass, string inputName)
     {
         Game game = new Game();
         Player player = new Player();
-        try
+        player = inputClass switch
         {
-            player = inputClass switch
-            {
-                "Archer" => new Archer(inputName),
-                "Assassin" => new Assassin(inputName),
-                "Executioner" => new Executioner(inputName),
-                "Knight" => new Knight(inputName),
-                "Mage" => new Mage(inputName),
-                "Samurai" => new Samurai(inputName),
-                "Summoner" => new Summoner(inputName),
-                "Warrior" => new Warrior(inputName),
-                _ => throw new Exception()
-            };
-            player.ToString().PrintEachLetter();
-        }
-        catch (Exception)
-        {
-            "Not a valid class type. Try again".PrintEachLetter();
-            "Select your class".PrintEachLetter();
-            var input = Console.ReadLine();
-            return SelectClass(input!, inputName);
-        }
-
+            "Archer" => new Archer(inputName),
+            "Assassin" => new Assassin(inputName),
+            "Executioner" => new Executioner(inputName),
+            "Knight" => new Knight(inputName),
+            "Mage" => new Mage(inputName),
+            "Samurai" => new Samurai(inputName),
+            "Summoner" => new Summoner(inputName),
+            "Warrior" => new Warrior(inputName),
+            _ => throw new Exception()
+        };
         return player;
     }
-    public static int PlayerTurn(IPlayer player, Enemy enemy)
+    public static int PlayerTurn(IPlayer player, Enemy enemy, string input)
     {
         Random rnd = new Random();
         var doesCrit = rnd.CritChance();
         try
         {
-            System.Console.WriteLine("Make your move (Dodge, Normal, Special, Ultimate)");
-            var input = Console.ReadLine();
             var move = input switch
             {
                 "Dodge" => Player.Moves.Dodge,
@@ -107,7 +53,7 @@ public class Game
             else if (move == Player.Moves.Special && Inventory.SpecialAttacks == 0)
             {
                 "You don't have any special attacks".PrintEachLetter();
-                return PlayerTurn(player, enemy);
+                throw new Exception();
             }
             else if (move == Player.Moves.Ultimate && Inventory.UltimateAttacks > 0)
             {
@@ -122,7 +68,7 @@ public class Game
             else if (move == Player.Moves.Ultimate && Inventory.UltimateAttacks == 0)
             {
                 "You don't have any ultimate attacks".PrintEachLetter();
-                return PlayerTurn(player, enemy);
+                throw new Exception();
             }
             else if (move == Player.Moves.Dodge)
                 return 0;
@@ -139,7 +85,7 @@ public class Game
         catch (Exception)
         {
             System.Console.WriteLine("Not a valid move. Try again");
-            return PlayerTurn(player, enemy);
+            throw new Exception();
         }
 
     }
@@ -174,7 +120,9 @@ public class Game
 
         while (roundIsStillGoing)
         {
-            var damage = PlayerTurn(player, enemy);
+            System.Console.WriteLine("Make your move (Dodge, Heal, Normal, Special, Ultimate");
+            var input = Console.ReadLine();
+            var damage = PlayerTurn(player, enemy, input);
             System.Console.WriteLine(damage);
             enemyHealth -= damage;
             System.Console.WriteLine($"Player Health: {playerHealth} | Enemy Health: {enemyHealth}");
@@ -208,7 +156,7 @@ public class Game
             "Select a class".PrintEachLetter();
             var input = Console.ReadLine();
 
-            SelectClass(input!, game.player.Name);
+            SelectClass(input!, player.Name);
         }
     }
 
@@ -220,7 +168,7 @@ public class Game
         "What would you like to buy".PrintEachLetter();
         List<string> ItemsBought = new List<string>();
         var input = Console.ReadLine();
-        if(input == "Attack Boost" && Gold >= 10)
+        if (input == "Attack Boost" && Gold >= 10)
         {
             Gold -= 10;
             ItemsBought.Add("AttackBoost");

@@ -15,6 +15,6 @@ public class Program
         // Enemy enemy = new LichKing();
 
         // System.Console.WriteLine(Game.PlayerTurn(player, enemy));
-        Game.MainMenu();
+        Game.PlayerCreate();
     }
 }

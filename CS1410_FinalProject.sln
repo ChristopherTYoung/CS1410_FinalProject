@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FightGame.Main", "FightGame
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FightGame.Test", "FightGame.Test\FightGame.Test.csproj", "{83ACCF4D-D18F-4B8E-B7C9-A870FF659FA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FightGame.Web", "FightGame.Web\FightGame.Web.csproj", "{95259D3F-54D6-442D-8D97-4DB1BF3ADAE6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{83ACCF4D-D18F-4B8E-B7C9-A870FF659FA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83ACCF4D-D18F-4B8E-B7C9-A870FF659FA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83ACCF4D-D18F-4B8E-B7C9-A870FF659FA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95259D3F-54D6-442D-8D97-4DB1BF3ADAE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95259D3F-54D6-442D-8D97-4DB1BF3ADAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95259D3F-54D6-442D-8D97-4DB1BF3ADAE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95259D3F-54D6-442D-8D97-4DB1BF3ADAE6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

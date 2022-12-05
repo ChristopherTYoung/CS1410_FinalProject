@@ -1,0 +1,66 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+    IPlayer player = new Player();
+    Game game = new Game();
+    PlayerFileService file = new PlayerFileService();
+}
+<p>Welcome to Fight Game.</p>
+<p>First, pick your username. If the username you entered already exists, then it will start you at your last saved
+    game. Select a class if this is your first time playing. The classes to choose from are Archer, Assassin,
+    Executioner, Knight, Mage, Samurai, Summoner, and the Warrior</p>
+<p>Name</p><input @bind="UserInputName" />
+<p>Class</p><input @bind="UserInputClassType" /><button type="reset"
+    @onclick="() => CreateCharacter=true">Submit</button>
+@if (CreateCharacter)
+{
+    if (File.Exists($"../Players/{UserInputName}.csv"))
+    {
+        player = file.ReadPlayerSavedData(UserInputName);
+        <p>@player.ToString()</p>
+        GameIsStillGoing = true;
+        <button type="button">Play</button>
+        <button type="button" @onclick="() => file.WritePlayerSavedData(player)">Quit</button>
+    }
+    else if (File.Exists($"../Players/{UserInputName}.csv") && UserInputClassType != "")
+    {
+        <p>You already have character with that username saved. No need to select a new class</p>
+        player = file.ReadPlayerSavedData(UserInputName);
+        <p>@player.ToString()</p>
+        GameIsStillGoing = true;
+        <button type="button">Play</button>
+        <button type="button" @onclick="() => file.WritePlayerSavedData(player)">Quit</button>
+    }
+    else
+    {
+        try
+        {
+            player = Game.SelectClass(UserInputClassType, UserInputName);
+            <p>@player.ToString()</p>
+            GameIsStillGoing = true;
+            <button type="button" @onclick="() => Game.Round(player)">Play</button>
+            <button type="button" @onclick="() => file.WritePlayerSavedData(player)">Quit</button>
+        }
+        catch (Exception)
+        {
+            <p>Not a valid class</p>
+        }
+    }
+}
+
+
+
+@code {
+    private string UserInputName { get; set; } = "";
+    private string UserInputClassType { get; set; } = "";
+    private bool CreateCharacter { get; set; } = false;
+    private bool GameIsStillGoing { get; set; } = false;
+
+}
