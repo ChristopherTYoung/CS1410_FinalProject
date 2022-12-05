@@ -196,8 +196,6 @@ public class Game
                 playerWins = false;
                 roundIsStillGoing = false;
             }
-
-
         }
         if (playerWins)
         {
