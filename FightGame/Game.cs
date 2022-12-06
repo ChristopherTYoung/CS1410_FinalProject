@@ -20,7 +20,7 @@ public class Game
         };
         return player;
     }
-    public static int PlayerTurn(IPlayer player, Enemy enemy, string input)
+    public static int PlayerTurn(IPlayer player, Enemy enemy, string input, List<string> ItemsBought)
     {
         Random rnd = new Random();
         var doesCrit = rnd.CritChance();
@@ -37,9 +37,17 @@ public class Game
             if (move == Player.Moves.Special && Inventory.SpecialAttacks > 0)
             {
                 Inventory.SpecialAttacks -= 1;
-                if (player.Damage > enemy.Defense && doesCrit)
+                if (player.Damage > enemy.Defense && doesCrit && ItemsBought.Contains("AttackBoost"))
+                {
+                    return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage) + 2;
+                }
+                else if (player.Damage > enemy.Defense && doesCrit)
                 {
                     return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage);
+                }
+                else if (player.Damage > enemy.Defense && doesCrit == false && ItemsBought.Contains("AttackBoost"))
+                {
+                    return ((player.Damage - enemy.Defense) * (int)move) + 2;
                 }
                 else if (player.Damage > enemy.Defense && doesCrit == false)
                 {
@@ -58,8 +66,12 @@ public class Game
             else if (move == Player.Moves.Ultimate && Inventory.UltimateAttacks > 0)
             {
                 Inventory.UltimateAttacks -= 1;
-                if (player.Damage > enemy.Defense && doesCrit)
+                if (player.Damage > enemy.Defense && doesCrit && ItemsBought.Contains("AttackBoost"))
+                    return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage) + 2;
+                else if (player.Damage > enemy.Defense && doesCrit)
                     return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage);
+                else if (player.Damage > enemy.Defense && doesCrit == false && ItemsBought.Contains("AttackBoost"))
+                    return ((player.Damage - enemy.Defense) * (int)move) + 2;
                 else if (player.Damage > enemy.Defense && doesCrit == false)
                     return ((player.Damage - enemy.Defense) * (int)move);
                 else
@@ -104,7 +116,7 @@ public class Game
         return 0;
     }
     int Gold = 0;
-    public static void Round(IPlayer player)
+    public static void Round(IPlayer player, List<string> ItemsBought)
     {
         Game game = new Game();
         System.Console.WriteLine(player.Name);
@@ -122,7 +134,7 @@ public class Game
         {
             System.Console.WriteLine("Make your move (Dodge, Heal, Normal, Special, Ultimate");
             var input = Console.ReadLine();
-            var damage = PlayerTurn(player, enemy, input);
+            var damage = PlayerTurn(player, enemy, input, ItemsBought);
             System.Console.WriteLine(damage);
             enemyHealth -= damage;
             System.Console.WriteLine($"Player Health: {playerHealth} | Enemy Health: {enemyHealth}");

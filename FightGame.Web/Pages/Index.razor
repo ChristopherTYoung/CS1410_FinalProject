@@ -2,6 +2,7 @@
 
 <PageTitle>FightGame</PageTitle>
 
+=======
 <p>Welcome to Fight Game.</p>
 <p>First, pick your username. If the username you entered already exists, then it will start you at your last saved
     game. Select a class if this is your first time playing. The classes to choose from are Archer, Assassin,
@@ -23,7 +24,7 @@
     else
     {
         <p>@player.ToString()</p>
-        <button type="button" @onclick="() => Game.Round(player)">Play</button>
+        <button type="button" @onclick="() => Game.Round(player, new List<string>() { })">Play</button>
         <button type="button" @onclick="() => file.WritePlayerSavedData(player)">Quit</button>
     }
 }
@@ -123,7 +124,7 @@
 
         while (roundIsStillGoing)
         {
-            var damage = Game.PlayerTurn(player, enemy, Move);
+            var damage = Game.PlayerTurn(player, enemy, Move, new List<string>() { });
             EnemyHealth -= damage;
             var enemydamage = Game.EnemyAttack(player, enemy);
             PlayerHealth -= enemydamage;

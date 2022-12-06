@@ -33,34 +33,35 @@ public class PlayerTests
     {
         Player player = new Knight("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.True(Game.PlayerTurn(player, enemy, "Normal") >= 2);
+        Assert.True(Game.PlayerTurn(player, enemy, "Normal", new List<string>() { }) >= 2);
     }
     [Test]
     public void TestPlayerAttack2()
     {
         Player player = new Knight("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.True(Game.PlayerTurn(player, enemy, "Special") >= 4);
+        Assert.True(Game.PlayerTurn(player, enemy, "Special", new List<string>() { }) >= 4);
     }
     [Test]
     public void TestPlayerAttack3()
     {
         Player player = new Knight("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.True(Game.PlayerTurn(player, enemy, "Ultimate") >= 6);
+        Assert.True(Game.PlayerTurn(player, enemy, "Ultimate", new List<string>() { }) >= 6);
     }
     [Test]
     public void TestDodge()
     {
         Player player = new Knight("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.True(Game.PlayerTurn(player, enemy, "Dodge") == 0);
+        Assert.True(Game.PlayerTurn(player, enemy, "Dodge", new List<string>() { }) == 0);
     }
     [Test]
     public void PlayersDamageIsTooLow()
     {
+        List<string> ItemsBought = new List<string>();
         Player player = new Archer("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal"));
+        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought));
     }
 }
