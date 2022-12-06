@@ -28,8 +28,9 @@ public class PlayerTests
     [Test]
     public void PlayersDamageIsTooLow()
     {
+        List<string> ItemsBought = new List<string>();
         Player player = new Archer("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal"));
+        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought));
     }
 }

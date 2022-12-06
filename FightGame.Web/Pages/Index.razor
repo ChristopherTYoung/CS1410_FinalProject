@@ -1,12 +1,4 @@
 ﻿@page "/"
-
-<PageTitle>Index</PageTitle>
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
 @code {
     IPlayer player = new Player();
     Game game = new Game();
@@ -19,6 +11,7 @@ Welcome to your new app.
 <p>Name</p><input @bind="UserInputName" />
 <p>Class</p><input @bind="UserInputClassType" /><button type="reset"
     @onclick="() => CreateCharacter=true">Submit</button>
+<hr>
 @if (CreateCharacter)
 {
     if (File.Exists($"../Players/{UserInputName}.csv"))
