@@ -12,4 +12,6 @@ public interface IPlayer
     public string? Description { get; init; }
     [Index(5)]
     public string? Weapon { get; init; }
+    [Index(6)]
+    public int Money { get; set; }
 }

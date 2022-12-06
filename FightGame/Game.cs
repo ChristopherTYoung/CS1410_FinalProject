@@ -129,10 +129,10 @@ public class Game
 
             if (enemyHealth <= 0)
             {
-                Player.Money = Player.Money + 5;
+                player.Money = player.Money + 5;
                 playerWins = true;
                 roundIsStillGoing = false;
-                Shop(Player.Money);
+                Shop(player.Money);
             }
 
             var enemydamage = EnemyAttack(player, enemy);

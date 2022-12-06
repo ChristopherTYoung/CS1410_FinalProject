@@ -15,16 +15,47 @@ public class PlayerTests
     [Test]
     public void ClassExceptionIsThrow()
     {
-        Player testPlayer = Game.SelectClass("asldfj", "Chris");
+        Player testPlayer = new Player();
+        try
+        {
+            testPlayer = Game.SelectClass("asldfj", "Chris");
+        }
+        catch (Exception)
+        {
+            Assert.AreEqual(0, testPlayer.Damage);
+            Assert.AreEqual(0, testPlayer.Defense);
+        }
+
     }
 
     [Test]
-    public void CanDoCritDamage()
+    public void TestPlayerAttack()
     {
-        Player player = new Archer("Chris");
-
+        Player player = new Knight("Chris");
+        Enemy enemy = new SkeletonKnight();
+        Assert.True(Game.PlayerTurn(player, enemy, "Normal") >= 2);
     }
-
+    [Test]
+    public void TestPlayerAttack2()
+    {
+        Player player = new Knight("Chris");
+        Enemy enemy = new SkeletonKnight();
+        Assert.True(Game.PlayerTurn(player, enemy, "Special") >= 4);
+    }
+    [Test]
+    public void TestPlayerAttack3()
+    {
+        Player player = new Knight("Chris");
+        Enemy enemy = new SkeletonKnight();
+        Assert.True(Game.PlayerTurn(player, enemy, "Ultimate") >= 6);
+    }
+    [Test]
+    public void TestDodge()
+    {
+        Player player = new Knight("Chris");
+        Enemy enemy = new SkeletonKnight();
+        Assert.True(Game.PlayerTurn(player, enemy, "Dodge") == 0);
+    }
     [Test]
     public void PlayersDamageIsTooLow()
     {

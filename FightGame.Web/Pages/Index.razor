@@ -1,66 +1,203 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+<PageTitle>FightGame</PageTitle>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
-@code {
-    IPlayer player = new Player();
-    Game game = new Game();
-    PlayerFileService file = new PlayerFileService();
-}
 <p>Welcome to Fight Game.</p>
 <p>First, pick your username. If the username you entered already exists, then it will start you at your last saved
     game. Select a class if this is your first time playing. The classes to choose from are Archer, Assassin,
     Executioner, Knight, Mage, Samurai, Summoner, and the Warrior</p>
 <p>Name</p><input @bind="UserInputName" />
-<p>Class</p><input @bind="UserInputClassType" /><button type="reset"
-    @onclick="() => CreateCharacter=true">Submit</button>
-@if (CreateCharacter)
+<p>Class</p><input @bind="UserInputClassType" /><button type="reset" @onclick="CreateCharacter">Submit</button>
+@if (CreatedCharacter)
 {
-    if (File.Exists($"../Players/{UserInputName}.csv"))
-    {
-        player = file.ReadPlayerSavedData(UserInputName);
-        <p>@player.ToString()</p>
-        GameIsStillGoing = true;
-        <button type="button">Play</button>
-        <button type="button" @onclick="() => file.WritePlayerSavedData(player)">Quit</button>
-    }
-    else if (File.Exists($"../Players/{UserInputName}.csv") && UserInputClassType != "")
+    if (File.Exists($"../Players/{UserInputName}.csv") && UserInputClassType != "")
     {
         <p>You already have character with that username saved. No need to select a new class</p>
-        player = file.ReadPlayerSavedData(UserInputName);
+    }
+    if (File.Exists($"../Players/{UserInputName}.csv"))
+    {
         <p>@player.ToString()</p>
-        GameIsStillGoing = true;
         <button type="button">Play</button>
         <button type="button" @onclick="() => file.WritePlayerSavedData(player)">Quit</button>
     }
     else
     {
-        try
+        <p>@player.ToString()</p>
+        <button type="button" @onclick="() => Game.Round(player)">Play</button>
+        <button type="button" @onclick="() => file.WritePlayerSavedData(player)">Quit</button>
+    }
+}
+@if (errorMessage != "")
+{
+    <p class="text-danger">@errorMessage</p>
+}
+@while (roundIsStillGoing)
+{
+    <p>You are facing @enemy.Name</p>
+    <p>Choose an attack</p>
+    <button type="button">Dodge</button>
+    <button type="button">Heal</button>
+    <button type="button">Normal</button>
+    <button type="button">Special</button>
+    <button type="button">Ultimate</button>
+    if (playerWins)
+    {
+        <p>Player has won!</p>
+    }
+    else
+    {
+        <p>Game over!</p>
+    }
+}
+
+@code {
+    IPlayer player = new Player();
+    Game game = new Game();
+    PlayerFileService file = new PlayerFileService();
+    private string userInputName = "";
+    private string UserInputName
+    {
+        get => userInputName;
+        set
         {
-            player = Game.SelectClass(UserInputClassType, UserInputName);
-            <p>@player.ToString()</p>
-            GameIsStillGoing = true;
-            <button type="button" @onclick="() => Game.Round(player)">Play</button>
-            <button type="button" @onclick="() => file.WritePlayerSavedData(player)">Quit</button>
+            userInputName = value;
         }
-        catch (Exception)
+    }
+    private string userInputClassType = "";
+    private string UserInputClassType
+    {
+        get => userInputClassType;
+        set
         {
-            <p>Not a valid class</p>
+            userInputClassType = value;
+        }
+    }
+    private bool CreatedCharacter { get; set; } = false;
+    private bool GameIsStillGoing { get; set; } = false;
+    private string errorMessage { get; set; } = "";
+
+    private void CreateCharacter()
+    {
+        errorMessage = "";
+        if (File.Exists($"../Players/{UserInputName}.csv"))
+        {
+            GameIsStillGoing = true;
+            player = file.ReadPlayerSavedData(UserInputName);
+        }
+        else
+        {
+            try
+            {
+                player = Game.SelectClass(UserInputClassType, UserInputName);
+                GameIsStillGoing = true;
+            }
+            catch (Exception)
+            {
+                CreatedCharacter = false;
+                errorMessage = "Not a valid class";
+            }
+        }
+        CreatedCharacter = true;
+    }
+    private int EnemyHealth { get; set; } = 0;
+    private int PlayerHealth { get; set; } = 0;
+    private bool roundIsStillGoing { get; set; } = false;
+    private bool playerWins { get; set; } = true;
+    private Enemy enemy { get; set; }
+    private bool PlayersTurn { get; set; } = false;
+    private string Move { get; set; } = "";
+    private void TakePlayerTurn(string input)
+    {
+        PlayersTurn = true;
+        Move = input;
+    }
+    private void Round(Player player)
+    {
+        Game game = new Game();
+        roundIsStillGoing = true;
+        enemy = Enemy.GetEnemy();
+
+        EnemyHealth = enemy.Health;
+        PlayerHealth = player.Health;
+        playerWins = true;
+
+        while (roundIsStillGoing)
+        {
+            var damage = Game.PlayerTurn(player, enemy, Move);
+            EnemyHealth -= damage;
+            var enemydamage = Game.EnemyAttack(player, enemy);
+            PlayerHealth -= enemydamage;
+
+            if (EnemyHealth <= 0)
+            {
+                player.Money = player.Money + 5;
+                playerWins = true;
+                roundIsStillGoing = false;
+                Game.Shop(player.Money);
+            }
+            else if (PlayerHealth <= 0)
+            {
+                playerWins = false;
+                Game.SelectClass(Move, player.Name);
+                roundIsStillGoing = false;
+            }
+
         }
     }
 }
 
+@* public static void Round(IPlayer player)
+    {
+    Game game = new Game();
+    System.Console.WriteLine(player.Name);
 
+    var enemy = Enemy.GetEnemy();
 
-@code {
-    private string UserInputName { get; set; } = "";
-    private string UserInputClassType { get; set; } = "";
-    private bool CreateCharacter { get; set; } = false;
-    private bool GameIsStillGoing { get; set; } = false;
+    var enemyHealth = enemy.Health;
+    var playerHealth = player.Health;
+    var roundIsStillGoing = true;
+    var playerWins = true;
 
-}
+    System.Console.WriteLine($"You are fighting {enemy.Name}");
+
+    while (roundIsStillGoing)
+    {
+    System.Console.WriteLine("Make your move (Dodge, Heal, Normal, Special, Ultimate");
+    var input = Console.ReadLine();
+    var damage = PlayerTurn(player, enemy, input);
+    System.Console.WriteLine(damage);
+    enemyHealth -= damage;
+    System.Console.WriteLine($"Player Health: {playerHealth} | Enemy Health: {enemyHealth}");
+
+    if (enemyHealth <= 0)
+    {
+    Player.Money = Player.Money + 5;
+    playerWins = true;
+    roundIsStillGoing = false;
+    Shop(Player.Money);
+    }
+
+    var enemydamage = EnemyAttack(player, enemy);
+    System.Console.WriteLine(enemydamage);
+    playerHealth -= enemydamage;
+    System.Console.WriteLine($"Player Health: {playerHealth} | Enemy Health: {enemyHealth}");
+    if (playerHealth <= 0)
+    {
+
+    playerWins = false;
+    roundIsStillGoing = false;
+    }
+    }
+    if (playerWins)
+    {
+    System.Console.WriteLine("Player won");
+    }
+    else if (playerWins == false)
+    {
+    "Game Over".PrintEachLetter();
+    "Select a class".PrintEachLetter();
+    var input = Console.ReadLine();
+
+    SelectClass(input!, player.Name);
+    }
+    } *@

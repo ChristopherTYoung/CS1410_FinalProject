@@ -15,9 +15,8 @@ public class PlayerFileService
         using (var reader = new StreamReader($"../Players/{filename}.csv"))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            csv.Read();
-            var record = csv.GetRecord<IPlayer>();
-            return record!;
+            var record = csv.GetRecords<Player>();
+            return record.First();
         }
     }
     public void WritePlayerSavedData(IPlayer player)
@@ -25,7 +24,9 @@ public class PlayerFileService
         using (var writer = new StreamWriter($"../Players/{player.Name}.csv"))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
-            csv.WriteRecord(player);
+            // csv.WriteHeader<IPlayer>();
+            var players = new List<IPlayer>(){ player };
+            csv.WriteRecords(players);
         }
     }
     public static IInventory ReadInventorySavedData(string filename)
