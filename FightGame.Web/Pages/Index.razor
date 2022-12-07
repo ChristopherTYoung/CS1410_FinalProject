@@ -2,13 +2,13 @@
 
 <PageTitle>FightGame</PageTitle>
 
-=======
 <p>Welcome to Fight Game.</p>
 <p>First, pick your username. If the username you entered already exists, then it will start you at your last saved
     game. Select a class if this is your first time playing. The classes to choose from are Archer, Assassin,
     Executioner, Knight, Mage, Samurai, Summoner, and the Warrior</p>
 <p>Name</p><input @bind="UserInputName" />
 <p>Class</p><input @bind="UserInputClassType" /><button type="reset" @onclick="CreateCharacter">Submit</button>
+<hr>
 @if (CreatedCharacter)
 {
     if (File.Exists($"../Players/{UserInputName}.csv") && UserInputClassType != "")
