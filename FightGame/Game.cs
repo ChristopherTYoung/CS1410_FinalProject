@@ -29,7 +29,6 @@ public class Game
             var move = input switch
             {
                 "Dodge" => Player.Moves.Dodge,
-                "Heal" => Player.Moves.Heal,
                 "Normal" => Player.Moves.Normal,
                 "Special" => Player.Moves.Special,
                 "Ultimate" => Player.Moves.Ultimate,
@@ -85,8 +84,6 @@ public class Game
             }
             else if (move == Player.Moves.Dodge)
                 return 0;
-            else if (move == Player.Moves.Heal)
-                return 0;
             else
             {
                 if (player.Damage > enemy.Defense && doesCrit)
@@ -135,7 +132,7 @@ public class Game
 
         while (roundIsStillGoing)
         {
-            System.Console.WriteLine("Make your move (Dodge, Heal, Normal, Special, Ultimate");
+            System.Console.WriteLine("Make your move (Dodge,Normal, Special, Ultimate");
             var input = Console.ReadLine();
             var damage = PlayerTurn(player, enemy, input, ItemsBought);
             System.Console.WriteLine(damage);
@@ -187,7 +184,6 @@ public class Game
         {
             Gold -= 10;
             ItemsBought.Add("AttackBoost");
-            // Player NewPlayerDamage = inputClass.Damage +  2;
         }
 
         if (input == "HealthBoost")
@@ -195,15 +191,24 @@ public class Game
             Gold -= 5;
             ItemsBought.Add("Health Boost");
         }
-        if (input == "DodgePotion")
+        if (input == "DodgeMoves")
         {
             Gold -= 5;
-            ItemsBought.Add("Dodge Potion");
+            Inventory.Dodges++;
         }
-        if (input == "Attack Potion")
+        if (input == "UltimateAttack")
         {
             Gold -= 5;
-            ItemsBought.Add("AttackPotion");
+            Inventory.UltimateAttacks ++ ;
+        }
+        if (input == "SpecialAttack")
+        {
+            Gold -= 5;
+            Inventory.SpecialAttacks ++ ;
+        }
+        if (input == "Nothing")
+        {
+            return ItemsBought;
         }
         //Make items a base value. Enemy will drop 10 gold each. After each encounter of the shop both enemy gold and Shop prices increase by 1/4 their original.
         //Potions will be 10 gold each (base value), upgrades will be (20 base value)

@@ -39,7 +39,6 @@
     <p>Your Health: @PlayerHealth Enemy Health: @EnemyHealth</p>
     <p>Choose an attack</p>
     <button type="button" @onclick="@(() => TakeTurn("Dodge", player))">Dodge</button>
-    <button type="button" @onclick="@(() => TakeTurn("Heal", player))">Heal</button>
     <button type="button" @onclick="@(() => TakeTurn("Normal", player))">Normal</button>
     <button type="button" @onclick="@(() => TakeTurn("Special", player))">Special</button>
     <button type="button" @onclick="@(() => TakeTurn("Ultimate", player))">Ultimate</button>
@@ -52,6 +51,28 @@
         <p>Game over!</p>
     }
 }
+@if (EnemyHealth <= 0)
+{
+    <p>Player has won!</p>
+    <p>Welcome to the Shop</p>
+    <p>We have quite a selection for you to choose from.</p>
+    <p>We have HealthBoost, AttackBoost, DodgeMoves, SpecialAttack and UltimateAttack</p>
+    <p>@($"You have {this.player.Money} gold")</p>
+    <p>What would you like to buy?</p>
+    <button type="button">DodgeMoves</button>
+    <button type="button">SpecialAttack</button>
+    <button type="button">UltimateAttack</button>
+    <button type="button">AttackBoost</button>
+    <button type="button">HealthBoost</button>
+    <button type="button">Nothing</button>
+}
+else if (PlayerHealth <= 0)
+{
+    <p>Game over!</p>
+    <button type="button" @onclick="PlayGame">Play</button>
+    <button type="button" @onclick="QuitGame">Quit</button>
+}
+
 
 @code {
     IPlayer player = new Player();
@@ -85,12 +106,7 @@
     private bool roundIsStillGoing { get; set; } = false;
     private bool playerWins { get; set; } = false;
     private bool PlayersTurn { get; set; } = false;
-    private void QuitGame()
-    {
-        file.WritePlayerSavedData(player);
-        CreatedCharacter = false;
-    }
-        private void CreateCharacter()
+    private void CreateCharacter()
     {
         errorMessage = "";
         if (File.Exists($"../Players/{UserInputName}.csv"))
@@ -126,6 +142,12 @@
         EnemyHealth = enemy.Health;
         PlayerHealth = player.Health;
     }
+    private void QuitGame()
+    {
+        file.WritePlayerSavedData(player);
+        CreatedCharacter = false;
+    }
+
     private void TakeTurn(string move, IPlayer player)
     {
         Game game = new Game();
@@ -145,7 +167,6 @@
             player.Money = player.Money + 5;
             playerWins = true;
             roundIsStillGoing = false;
-            Game.Shop(player.Money);
         }
         else if (PlayerHealth <= 0)
         {
@@ -154,6 +175,52 @@
             roundIsStillGoing = false;
         }
     }
+
+    @* public static List<string> Shop(int Gold)
+        {
+        "Welcome to the Shop".PrintEachLetter();
+        "We have quite a selection for you to choose from".PrintEachLetter();
+        "We have health and dodge potions, you can also upgrade your abilities".PrintEachLetter();
+        "What would you like to buy".PrintEachLetter();
+        List<string> ItemsBought = new List<string>();
+        var input = Console.ReadLine();
+        if (input == "Attack Boost" && Gold >= 10)
+        {
+        Gold -= 10;
+        ItemsBought.Add("AttackBoost");
+        }
+
+        if (input == "HealthBoost")
+        {
+        Gold -= 5;
+        ItemsBought.Add("Health Boost");
+        }
+        if (input == "DodgeMoves")
+        {
+        Gold -= 5;
+        Inventory.Dodges++;
+        }
+        if (input == "UltimateAttack")
+        {
+        Gold -= 5;
+        Inventory.UltimateAttacks ++ ;
+        }
+        if (input == "SpecialAttack")
+        {
+        Gold -= 5;
+        Inventory.SpecialAttacks ++ ;
+        }
+        if (input == "Nothing")
+        {
+        return ItemsBought;
+        }
+        //Make items a base value. Enemy will drop 10 gold each. After each encounter of the shop both enemy gold and Shop
+        prices increase by 1/4 their original.
+        //Potions will be 10 gold each (base value), upgrades will be (20 base value)
+
+        return ItemsBought;
+        } *@
+
 }
 
 @* public static void Round(IPlayer player)
