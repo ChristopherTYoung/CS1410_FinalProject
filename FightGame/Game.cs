@@ -29,6 +29,7 @@ public class Game
             var move = input switch
             {
                 "Dodge" => Player.Moves.Dodge,
+                "Heal" => Player.Moves.Heal,
                 "Normal" => Player.Moves.Normal,
                 "Special" => Player.Moves.Special,
                 "Ultimate" => Player.Moves.Ultimate,
@@ -83,6 +84,8 @@ public class Game
                 throw new Exception();
             }
             else if (move == Player.Moves.Dodge)
+                return 0;
+            else if (move == Player.Moves.Heal)
                 return 0;
             else
             {

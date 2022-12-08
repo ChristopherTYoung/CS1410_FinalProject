@@ -19,6 +19,7 @@ public class Player : IPlayer
     {
         Normal = 1,
         Dodge = 0,
+        Heal = 0,
         Special = 2,
         Ultimate = 3,
     }

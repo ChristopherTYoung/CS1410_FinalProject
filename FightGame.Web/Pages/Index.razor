@@ -18,34 +18,36 @@
     if (File.Exists($"../Players/{UserInputName}.csv"))
     {
         <p>@player.ToString()</p>
-        <button type="button">Play</button>
-        <button type="button" @onclick="() => file.WritePlayerSavedData(player)">Quit</button>
     }
     else
     {
         <p>@player.ToString()</p>
-        <button type="button" @onclick="() => Game.Round(player, new List<string>() { })">Play</button>
-        <button type="button" @onclick="() => file.WritePlayerSavedData(player)">Quit</button>
     }
 }
 @if (errorMessage != "")
 {
     <p class="text-danger">@errorMessage</p>
 }
-@while (roundIsStillGoing)
+@if (DisplayMenu)
+{
+    <button type="button" @onclick="PlayGame">Play</button>
+    <button type="button" @onclick="QuitGame">Quit</button>
+}
+@if (roundIsStillGoing)
 {
     <p>You are facing @enemy.Name</p>
+    <p>Your Health: @PlayerHealth Enemy Health: @EnemyHealth</p>
     <p>Choose an attack</p>
-    <button type="button">Dodge</button>
-    <button type="button">Heal</button>
-    <button type="button">Normal</button>
-    <button type="button">Special</button>
-    <button type="button">Ultimate</button>
-    if (playerWins)
+    <button type="button" @onclick="@(() => TakeTurn("Dodge", player))">Dodge</button>
+    <button type="button" @onclick="@(() => TakeTurn("Heal", player))">Heal</button>
+    <button type="button" @onclick="@(() => TakeTurn("Normal", player))">Normal</button>
+    <button type="button" @onclick="@(() => TakeTurn("Special", player))">Special</button>
+    <button type="button" @onclick="@(() => TakeTurn("Ultimate", player))">Ultimate</button>
+    if (enemy.Health <= 0)
     {
         <p>Player has won!</p>
     }
-    else
+    else if (player.Health <= 0)
     {
         <p>Game over!</p>
     }
@@ -55,6 +57,7 @@
     IPlayer player = new Player();
     Game game = new Game();
     PlayerFileService file = new PlayerFileService();
+    private Enemy enemy { get; set; }
     private string userInputName = "";
     private string UserInputName
     {
@@ -76,6 +79,7 @@
     private bool CreatedCharacter { get; set; } = false;
     private bool GameIsStillGoing { get; set; } = false;
     private string errorMessage { get; set; } = "";
+    private bool DisplayMenu { get; set; } = false;
 
     private void CreateCharacter()
     {
@@ -99,50 +103,57 @@
             }
         }
         CreatedCharacter = true;
+        Menu();
     }
-    private int EnemyHealth { get; set; } = 0;
-    private int PlayerHealth { get; set; } = 0;
-    private bool roundIsStillGoing { get; set; } = false;
-    private bool playerWins { get; set; } = true;
-    private Enemy enemy { get; set; }
-    private bool PlayersTurn { get; set; } = false;
-    private string Move { get; set; } = "";
-    private void TakePlayerTurn(string input)
+    private void Menu()
     {
-        PlayersTurn = true;
-        Move = input;
+        DisplayMenu = true;
     }
-    private void Round(Player player)
+    private void PlayGame()
     {
-        Game game = new Game();
-        roundIsStillGoing = true;
+        DisplayMenu = false;
         enemy = Enemy.GetEnemy();
-
+        roundIsStillGoing = true;
         EnemyHealth = enemy.Health;
         PlayerHealth = player.Health;
-        playerWins = true;
+    }
+    private void QuitGame()
+    {
+        file.WritePlayerSavedData(player);
+        CreatedCharacter = false;
+    }
+    private int EnemyHealth { get; set; }
+    private int PlayerHealth { get; set; }
+    private bool roundIsStillGoing { get; set; } = false;
+    private bool playerWins { get; set; } = false;
 
-        while (roundIsStillGoing)
+    private bool PlayersTurn { get; set; } = false;
+    private void TakeTurn(string move, IPlayer player)
+    {
+        Game game = new Game();
+        try
         {
-            var damage = Game.PlayerTurn(player, enemy, Move, new List<string>() { });
+            var damage = Game.PlayerTurn(player, enemy, move, new List<string>() { });
             EnemyHealth -= damage;
-            var enemydamage = Game.EnemyAttack(player, enemy);
-            PlayerHealth -= enemydamage;
-
-            if (EnemyHealth <= 0)
-            {
-                player.Money = player.Money + 5;
-                playerWins = true;
-                roundIsStillGoing = false;
-                Game.Shop(player.Money);
-            }
-            else if (PlayerHealth <= 0)
-            {
-                playerWins = false;
-                Game.SelectClass(Move, player.Name);
-                roundIsStillGoing = false;
-            }
-
+        }
+        catch(Exception)
+        {
+            errorMessage = $"You don't have any more {move}'s";
+        }
+        var enemydamage = Game.EnemyAttack(player, enemy);
+        PlayerHealth -= enemydamage;
+        if (EnemyHealth <= 0)
+        {
+            player.Money = player.Money + 5;
+            playerWins = true;
+            roundIsStillGoing = false;
+            Game.Shop(player.Money);
+        }
+        else if (PlayerHealth <= 0)
+        {
+            playerWins = false;
+            @* Game.SelectClass(move, player.Name); *@
+            roundIsStillGoing = false;
         }
     }
 }
