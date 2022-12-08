@@ -43,11 +43,11 @@
     <button type="button" @onclick="@(() => TakeTurn("Normal", player))">Normal</button>
     <button type="button" @onclick="@(() => TakeTurn("Special", player))">Special</button>
     <button type="button" @onclick="@(() => TakeTurn("Ultimate", player))">Ultimate</button>
-    if (enemy.Health <= 0)
+    if (EnemyHealth <= 0)
     {
         <p>Player has won!</p>
     }
-    else if (player.Health <= 0)
+    else if (PlayerHealth <= 0)
     {
         <p>Game over!</p>
     }
@@ -80,8 +80,17 @@
     private bool GameIsStillGoing { get; set; } = false;
     private string errorMessage { get; set; } = "";
     private bool DisplayMenu { get; set; } = false;
-
-    private void CreateCharacter()
+    private int EnemyHealth { get; set; }
+    private int PlayerHealth { get; set; }
+    private bool roundIsStillGoing { get; set; } = false;
+    private bool playerWins { get; set; } = false;
+    private bool PlayersTurn { get; set; } = false;
+    private void QuitGame()
+    {
+        file.WritePlayerSavedData(player);
+        CreatedCharacter = false;
+    }
+        private void CreateCharacter()
     {
         errorMessage = "";
         if (File.Exists($"../Players/{UserInputName}.csv"))
@@ -117,17 +126,6 @@
         EnemyHealth = enemy.Health;
         PlayerHealth = player.Health;
     }
-    private void QuitGame()
-    {
-        file.WritePlayerSavedData(player);
-        CreatedCharacter = false;
-    }
-    private int EnemyHealth { get; set; }
-    private int PlayerHealth { get; set; }
-    private bool roundIsStillGoing { get; set; } = false;
-    private bool playerWins { get; set; } = false;
-
-    private bool PlayersTurn { get; set; } = false;
     private void TakeTurn(string move, IPlayer player)
     {
         Game game = new Game();
@@ -136,7 +134,7 @@
             var damage = Game.PlayerTurn(player, enemy, move, new List<string>() { });
             EnemyHealth -= damage;
         }
-        catch(Exception)
+        catch (Exception)
         {
             errorMessage = $"You don't have any more {move}'s";
         }
