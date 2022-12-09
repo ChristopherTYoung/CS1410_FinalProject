@@ -6,8 +6,6 @@ public struct Inventory : IInventory
     public int SpecialAttacks { get; set; } = 3;
     [Index(2)]
     public int Dodges { get; set; } = 1;
-    [Index(3)]
-    public int HealingPotions { get; set; } = 3;
     public Inventory()
     {
 

@@ -6,6 +6,4 @@ public interface IInventory
     public int SpecialAttacks { get; set; }
     [Index(2)]
     public int Dodges { get; set; }
-    [Index(3)]
-    public int HealingPotions { get; set; }
 }
