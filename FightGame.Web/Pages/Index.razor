@@ -52,7 +52,7 @@
         <p>Game over!</p>
     }
 }
-@if (EnemyHealth <= 0)
+@if (playerWins && roundIsOver)
 {
     <p>Player has won!</p>
 }
@@ -63,19 +63,19 @@
     <p>We have HealthBoost, AttackBoost, DodgeMoves, SpecialAttack and UltimateAttack</p>
     <p>@($"You have {this.player.Money} gold")</p>
     <p>What would you like to buy?</p>
-    <button type="button" @onclick= "@(() => BuyItem("DodgeMoves"))">DodgeMoves</button>
-    <button type="button" @onclick= "@(() => BuyItem("SpecialAttack"))">SpecialAttack</button>
-    <button type="button" @onclick= "@(() => BuyItem("UltimateAttack"))">UltimateAttack</button>
-    <button type="button" @onclick= "@(() => BuyItem("AttackBoost"))">AttackBoost</button>
-    <button type="button" @onclick= "@(() => BuyItem("HealthBoost"))">HealthBoost</button>
+    <button type="button" @onclick="@(() => BuyItem("DodgeMoves"))">DodgeMoves</button>
+    <button type="button" @onclick="@(() => BuyItem("SpecialAttack"))">SpecialAttack</button>
+    <button type="button" @onclick="@(() => BuyItem("UltimateAttack"))">UltimateAttack</button>
+    <button type="button" @onclick="@(() => BuyItem("AttackBoost"))">AttackBoost</button>
+    <button type="button" @onclick="@(() => BuyItem("HealthBoost"))">HealthBoost</button>
     <button type="button" @onclick="PlayGame">Continue</button>
     <button type="button" @onclick="QuitGame">Quit</button>
 }
-else if (PlayerHealth <= 0)
+else if (playerWins == false && roundIsOver)
 {
     <p>Game over!</p>
-    <button type="button" @onclick="PlayGame">Play</button>
-    <button type="button" @onclick="QuitGame">Quit</button>
+    <button type="reset" @onclick="PlayGame">Play</button>
+    <button type="reset" @onclick="QuitGame">Quit</button>
 }
 
 
@@ -112,6 +112,7 @@ else if (PlayerHealth <= 0)
     private bool roundIsStillGoing { get; set; } = false;
     private bool playerWins { get; set; } = false;
     private bool PlayersTurn { get; set; } = false;
+    private bool roundIsOver { get; set; } = false;
     private void CreateCharacter()
     {
         errorMessage = "";
@@ -140,11 +141,11 @@ else if (PlayerHealth <= 0)
     private void Menu()
     {
         DisplayMenu = true;
-
     }
 
     private void PlayGame()
     {
+        roundIsOver = false;
         DisplayMenu = false;
         UserInShop = false;
         enemy = Enemy.GetEnemy();
@@ -157,10 +158,14 @@ else if (PlayerHealth <= 0)
     {
         file.WritePlayerSavedData(player);
         CreatedCharacter = false;
+        UserInShop = false;
+        roundIsOver = false;
+        DisplayMenu = false;
     }
 
     private void TakeTurn(string move, IPlayer player)
     {
+        errorMessage = "";
         Game game = new Game();
         try
         {
@@ -171,17 +176,22 @@ else if (PlayerHealth <= 0)
         {
             errorMessage = $"You don't have any more {move}'s";
         }
-        var enemydamage = Game.EnemyAttack(player, enemy);
-        PlayerHealth -= enemydamage;
+        if (move != "Dodge")
+        {
+            var enemydamage = Game.EnemyAttack(player, enemy);
+            PlayerHealth -= enemydamage;
+        }
         if (EnemyHealth <= 0)
         {
             player.Money = player.Money + 5;
             playerWins = true;
+            roundIsOver = true;
             roundIsStillGoing = false;
             OpenShop();
         }
         else if (PlayerHealth <= 0)
         {
+            roundIsOver = true;
             playerWins = false;
             @* Game.SelectClass(move, player.Name); *@
             roundIsStillGoing = false;
@@ -216,20 +226,19 @@ else if (PlayerHealth <= 0)
         if (input == "UltimateAttack" && player.Money >= 5)
         {
             player.Money -= 5;
-            Inventory.UltimateAttacks ++ ;
+            Inventory.UltimateAttacks++;
         }
         if (input == "SpecialAttack" && player.Money >= 5)
         {
             player.Money -= 5;
-            Inventory.SpecialAttacks ++ ;
+            Inventory.SpecialAttacks++;
         }
 
         if (player.Money == 0)
         {
             PlayGame();
         }
-        
+
         return ItemsBought;
     }
 }
-

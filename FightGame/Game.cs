@@ -60,7 +60,6 @@ public class Game
             }
             else if (move == Player.Moves.Special && Inventory.SpecialAttacks == 0)
             {
-                "You don't have any special attacks".PrintEachLetter();
                 throw new Exception();
             }
             else if (move == Player.Moves.Ultimate && Inventory.UltimateAttacks > 0)
@@ -79,7 +78,6 @@ public class Game
             }
             else if (move == Player.Moves.Ultimate && Inventory.UltimateAttacks == 0)
             {
-                "You don't have any ultimate attacks".PrintEachLetter();
                 throw new Exception();
             }
             else if (move == Player.Moves.Dodge)
@@ -114,105 +112,5 @@ public class Game
         else if (enemy.Damage < player.Defense)
             return enemy.Damage;
         return 0;
-    }
-    int Gold = 0;
-    public static void Round(IPlayer player, List<string> ItemsBought)
-    {
-        Game game = new Game();
-        System.Console.WriteLine(player.Name);
-
-        var enemy = Enemy.GetEnemy();
-
-        var enemyHealth = enemy.Health;
-        var playerHealth = player.Health;
-        var roundIsStillGoing = true;
-        var playerWins = true;
-
-        System.Console.WriteLine($"You are fighting {enemy.Name}");
-
-        while (roundIsStillGoing)
-        {
-            System.Console.WriteLine("Make your move (Dodge,Normal, Special, Ultimate");
-            var input = Console.ReadLine();
-            var damage = PlayerTurn(player, enemy, input, ItemsBought);
-            System.Console.WriteLine(damage);
-            enemyHealth -= damage;
-            System.Console.WriteLine($"Player Health: {playerHealth} | Enemy Health: {enemyHealth}");
-
-            if (enemyHealth <= 0)
-            {
-                player.Money = player.Money + 5;
-                playerWins = true;
-                roundIsStillGoing = false;
-                Shop(player.Money);
-            }
-
-            var enemydamage = EnemyAttack(player, enemy);
-            System.Console.WriteLine(enemydamage);
-            playerHealth -= enemydamage;
-            System.Console.WriteLine($"Player Health: {playerHealth} | Enemy Health: {enemyHealth}");
-            if (playerHealth <= 0)
-            {
-
-                playerWins = false;
-                roundIsStillGoing = false;
-            }
-        }
-        if (playerWins)
-        {
-            System.Console.WriteLine("Player won");
-        }
-        else if (playerWins == false)
-        {
-            "Game Over".PrintEachLetter();
-            "Select a class".PrintEachLetter();
-            var input = Console.ReadLine();
-
-            SelectClass(input!, player.Name);
-        }
-    }
-
-    public static List<string> Shop(int Gold)
-    {
-        "Welcome to the Shop".PrintEachLetter();
-        "We have quite a selection for you to choose from".PrintEachLetter();
-        "We have health and dodge potions, you can also upgrade your abilities".PrintEachLetter();
-        "What would you like to buy".PrintEachLetter();
-        List<string> ItemsBought = new List<string>();
-        var input = Console.ReadLine();
-        if (input == "Attack Boost")
-        {
-            Gold -= 10;
-            ItemsBought.Add("AttackBoost");
-        }
-
-        if (input == "HealthBoost")
-        {
-            Gold -= 5;
-            ItemsBought.Add("Health Boost");
-        }
-        if (input == "DodgeMoves")
-        {
-            Gold -= 5;
-            Inventory.Dodges++;
-        }
-        if (input == "UltimateAttack")
-        {
-            Gold -= 5;
-            Inventory.UltimateAttacks ++ ;
-        }
-        if (input == "SpecialAttack")
-        {
-            Gold -= 5;
-            Inventory.SpecialAttacks ++ ;
-        }
-        if (input == "Nothing")
-        {
-            return ItemsBought;
-        }
-        //Make items a base value. Enemy will drop 10 gold each. After each encounter of the shop both enemy gold and Shop prices increase by 1/4 their original.
-        //Potions will be 10 gold each (base value), upgrades will be (20 base value)
-
-        return ItemsBought;
     }
 }
