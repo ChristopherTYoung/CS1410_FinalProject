@@ -110,6 +110,7 @@ else if (playerWins == false && roundIsOver)
     private int EnemyHealth { get; set; }
     private bool UserInShop { get; set; } = false;
     private int PlayerHealth { get; set; }
+    private List<string> ItemsBought { get; set; } = new List<string>();
     private bool roundIsStillGoing { get; set; } = false;
     private bool playerWins { get; set; } = false;
     private bool PlayersTurn { get; set; } = false;
@@ -154,6 +155,8 @@ else if (playerWins == false && roundIsOver)
         roundIsStillGoing = true;
         EnemyHealth = enemy.Health;
         PlayerHealth = player.Health;
+        if(ItemsBought.Contains("Health Boost"))
+            PlayerHealth += 10;
     }
 
     private void QuitGame()
@@ -173,7 +176,7 @@ else if (playerWins == false && roundIsOver)
         Game game = new Game();
         try
         {
-            var damage = Game.PlayerTurn(player, enemy, move, new List<string>() { }, inventory);
+            var damage = Game.PlayerTurn(player, enemy, move, ItemsBought, inventory);
             EnemyHealth -= damage;
         }
         catch (Exception)
@@ -214,7 +217,7 @@ else if (playerWins == false && roundIsOver)
         if (input == "Attack Boost" && player.Money >= 10)
         {
             player.Money -= 10;
-            ItemsBought.Add("AttackBoost");
+            ItemsBought.Add("Attack Boost");
         }
 
         if (input == "HealthBoost" && player.Money >= 10)

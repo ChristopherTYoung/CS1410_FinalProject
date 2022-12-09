@@ -37,7 +37,7 @@ public class Game
             if (move == Player.Moves.Special && inventory.SpecialAttacks > 0)
             {
                 inventory.SpecialAttacks -= 1;
-                if (player.Damage > enemy.Defense && doesCrit && ItemsBought.Contains("AttackBoost"))
+                if (player.Damage > enemy.Defense && doesCrit && ItemsBought.Contains("Attack Boost"))
                 {
                     return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage) + 2;
                 }
@@ -45,7 +45,7 @@ public class Game
                 {
                     return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage);
                 }
-                else if (player.Damage > enemy.Defense && doesCrit == false && ItemsBought.Contains("AttackBoost"))
+                else if (player.Damage > enemy.Defense && doesCrit == false && ItemsBought.Contains("Attack Boost"))
                 {
                     return ((player.Damage - enemy.Defense) * (int)move) + 2;
                 }
@@ -63,11 +63,11 @@ public class Game
             else if (move == Player.Moves.Ultimate && inventory.UltimateAttacks > 0)
             {
                 inventory.UltimateAttacks -= 1;
-                if (player.Damage > enemy.Defense && doesCrit && ItemsBought.Contains("AttackBoost"))
+                if (player.Damage > enemy.Defense && doesCrit && ItemsBought.Contains("Attack Boost"))
                     return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage) + 2;
                 else if (player.Damage > enemy.Defense && doesCrit)
                     return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage);
-                else if (player.Damage > enemy.Defense && doesCrit == false && ItemsBought.Contains("AttackBoost"))
+                else if (player.Damage > enemy.Defense && doesCrit == false && ItemsBought.Contains("Attack Boost"))
                     return ((player.Damage - enemy.Defense) * (int)move) + 2;
                 else if (player.Damage > enemy.Defense && doesCrit == false)
                     return ((player.Damage - enemy.Defense) * (int)move);
@@ -85,10 +85,14 @@ public class Game
                 throw new Exception();
             else
             {
-                if (player.Damage > enemy.Defense && doesCrit)
+                if (player.Damage > enemy.Defense && doesCrit && ItemsBought.Contains("Attack Boost"))
+                    return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage) + 2;
+                else if (player.Damage > enemy.Defense && doesCrit)
                     return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage);
+                else if (player.Damage > enemy.Defense && doesCrit == false && ItemsBought.Contains("Attack Boost"))
+                    return ((player.Damage - enemy.Defense) * (int)move) + 2;
                 else if (player.Damage > enemy.Defense && doesCrit == false)
-                    return ((player.Damage - enemy.Defense) * (int)move);
+                    return ((player.Damage - enemy.Defense) * (int)move) + 2;
                 else
                     return player.Damage;
             }
