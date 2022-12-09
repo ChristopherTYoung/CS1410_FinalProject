@@ -1,9 +1,13 @@
 public struct Inventory : IInventory
 {
-    public static int UltimateAttacks { get; set; } = 1;
-    public static int SpecialAttacks { get; set; } = 3;
-    public static int Dodges { get; set; } = 1;
-    public static int HealingPotions { get; set; } = 3;
+    [Index(0)]
+    public int UltimateAttacks { get; set; } = 1;
+    [Index(1)]
+    public int SpecialAttacks { get; set; } = 3;
+    [Index(2)]
+    public int Dodges { get; set; } = 1;
+    [Index(3)]
+    public int HealingPotions { get; set; } = 3;
     public Inventory()
     {
 

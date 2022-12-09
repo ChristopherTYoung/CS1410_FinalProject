@@ -27,61 +27,68 @@ public class PlayerTests
     [Test]
     public void TestPlayerAttack()
     {
+        IInventory inventory = new Inventory();
         Player player = new Knight("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.True(Game.PlayerTurn(player, enemy, "Normal", new List<string>() { }) >= 2);
+        Assert.True(Game.PlayerTurn(player, enemy, "Normal", new List<string>() { }, inventory) >= 2);
     }
-    
+
     [Test]
     public void TestPlayerAttack2()
     {
+        IInventory inventory = new Inventory();
         Player player = new Knight("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.True(Game.PlayerTurn(player, enemy, "Special", new List<string>() { }) >= 4);
+        Assert.True(Game.PlayerTurn(player, enemy, "Special", new List<string>() { }, inventory) >= 4);
     }
 
     [Test]
     public void TestPlayerAttack3()
     {
+        IInventory inventory = new Inventory();
         Player player = new Knight("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.True(Game.PlayerTurn(player, enemy, "Ultimate", new List<string>() { }) >= 6);
+        Assert.True(Game.PlayerTurn(player, enemy, "Ultimate", new List<string>() { }, inventory) >= 6);
     }
 
     [Test]
     public void TestDodge()
     {
+        IInventory inventory = new Inventory();
         Player player = new Knight("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.True(Game.PlayerTurn(player, enemy, "Dodge", new List<string>() { }) == 0);
+        Assert.True(Game.PlayerTurn(player, enemy, "Dodge", new List<string>() { }, inventory) == 0);
     }
 
     [Test]
     public void PlayersDamageIsTooLow()
     {
+        IInventory inventory = new Inventory();
         List<string> ItemsBought = new List<string>();
         Player player = new Archer("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought));
+        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory));
     }
 
     [Test]
     public void PlayersDoesDamageWithShopItems()
     {
         //Damage is higher
+        IInventory inventory = new Inventory();
         List<string> ItemsBought = new List<string>();
         Player player = new Archer("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought));
+        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory));
     }
 
     [Test]
-     public void PlayersDoesDamageWithShopItems2()
+    public void PlayersDoesDamageWithShopItems2()
     {
         //health is larger
+        IInventory inventory = new Inventory();
         List<string> ItemsBought = new List<string>();
         Player player = new Archer("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought));
+        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory));
     }
 }

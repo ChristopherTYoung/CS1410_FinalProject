@@ -20,7 +20,7 @@ public class Game
         };
         return player;
     }
-    public static int PlayerTurn(IPlayer player, Enemy enemy, string input, List<string> ItemsBought)
+    public static int PlayerTurn(IPlayer player, Enemy enemy, string input, List<string> ItemsBought, IInventory inventory)
     {
         Random rnd = new Random();
         var doesCrit = rnd.CritChance();
@@ -34,9 +34,9 @@ public class Game
                 "Ultimate" => Player.Moves.Ultimate,
                 _ => throw new Exception()
             };
-            if (move == Player.Moves.Special && Inventory.SpecialAttacks > 0)
+            if (move == Player.Moves.Special && inventory.SpecialAttacks > 0)
             {
-                Inventory.SpecialAttacks -= 1;
+                inventory.SpecialAttacks -= 1;
                 if (player.Damage > enemy.Defense && doesCrit && ItemsBought.Contains("AttackBoost"))
                 {
                     return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage) + 2;
@@ -58,13 +58,11 @@ public class Game
                     return player.Damage;
                 }
             }
-            else if (move == Player.Moves.Special && Inventory.SpecialAttacks == 0)
-            {
+            else if (move == Player.Moves.Special && inventory.SpecialAttacks == 0)
                 throw new Exception();
-            }
-            else if (move == Player.Moves.Ultimate && Inventory.UltimateAttacks > 0)
+            else if (move == Player.Moves.Ultimate && inventory.UltimateAttacks > 0)
             {
-                Inventory.UltimateAttacks -= 1;
+                inventory.UltimateAttacks -= 1;
                 if (player.Damage > enemy.Defense && doesCrit && ItemsBought.Contains("AttackBoost"))
                     return ((player.Damage - enemy.Defense) * (int)move) + rnd.CriticalHit(player.Damage) + 2;
                 else if (player.Damage > enemy.Defense && doesCrit)
@@ -76,12 +74,15 @@ public class Game
                 else
                     return player.Damage;
             }
-            else if (move == Player.Moves.Ultimate && Inventory.UltimateAttacks == 0)
-            {
+            else if (move == Player.Moves.Ultimate && inventory.UltimateAttacks == 0)
                 throw new Exception();
-            }
-            else if (move == Player.Moves.Dodge)
+            else if (move == Player.Moves.Dodge && inventory.Dodges > 0)
+            {
+                inventory.Dodges -= 1;
                 return 0;
+            }
+            else if (move == Player.Moves.Dodge && inventory.Dodges == 0)
+                throw new Exception();
             else
             {
                 if (player.Damage > enemy.Defense && doesCrit)

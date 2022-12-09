@@ -34,16 +34,17 @@ public class PlayerFileService
         using (var reader = new StreamReader($"../Players/{filename}Inventory.csv"))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            var record = csv.GetRecord<IInventory>();
-            return record!;
+            var record = csv.GetRecords<Inventory>();
+            return record.First();
         }
     }
-    public static void WriteInventorySavedData(string filename, Inventory inventory)
+    public static void WriteInventorySavedData(string filename, IInventory inventory)
     {
         using (var writer = new StreamWriter($"../Players/{filename}Inventory.csv"))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
-            csv.WriteRecord(inventory);
+            var inventories = new List<IInventory>() { inventory };
+            csv.WriteRecords(inventories);
         }
     }
 }

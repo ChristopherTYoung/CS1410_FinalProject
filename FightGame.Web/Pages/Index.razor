@@ -81,6 +81,7 @@ else if (playerWins == false && roundIsOver)
 
 @code {
     IPlayer player = new Player();
+    IInventory inventory = new Inventory();
     Game game = new Game();
     PlayerFileService file = new PlayerFileService();
     private Enemy enemy { get; set; }
@@ -120,6 +121,7 @@ else if (playerWins == false && roundIsOver)
         {
             GameIsStillGoing = true;
             player = file.ReadPlayerSavedData(UserInputName);
+            inventory = PlayerFileService.ReadInventorySavedData(UserInputName);
         }
         else
         {
@@ -157,6 +159,7 @@ else if (playerWins == false && roundIsOver)
     private void QuitGame()
     {
         file.WritePlayerSavedData(player);
+        PlayerFileService.WriteInventorySavedData(player.Name, inventory);
         CreatedCharacter = false;
         UserInShop = false;
         roundIsOver = false;
@@ -169,7 +172,7 @@ else if (playerWins == false && roundIsOver)
         Game game = new Game();
         try
         {
-            var damage = Game.PlayerTurn(player, enemy, move, new List<string>() { });
+            var damage = Game.PlayerTurn(player, enemy, move, new List<string>() { }, inventory);
             EnemyHealth -= damage;
         }
         catch (Exception)
@@ -221,17 +224,17 @@ else if (playerWins == false && roundIsOver)
         if (input == "DodgeMoves" && player.Money >= 5)
         {
             player.Money -= 5;
-            Inventory.Dodges++;
+            inventory.Dodges++;
         }
         if (input == "UltimateAttack" && player.Money >= 5)
         {
             player.Money -= 5;
-            Inventory.UltimateAttacks++;
+            inventory.UltimateAttacks++;
         }
         if (input == "SpecialAttack" && player.Money >= 5)
         {
             player.Money -= 5;
-            Inventory.SpecialAttacks++;
+            inventory.SpecialAttacks++;
         }
 
         if (player.Money == 0)
