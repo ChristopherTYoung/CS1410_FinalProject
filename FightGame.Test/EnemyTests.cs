@@ -31,4 +31,11 @@ public class EnemyTests
         Enemy CurrentEnemy = new SpearUser();
         Assert.AreEqual(CurrentEnemy.Damage, new SpearUser().Damage);
     }
+
+    [Test]
+    public void ListContainsShopItem()
+    {
+        Enemy CurrentEnemy = new SpearUser();
+        Assert.AreEqual(CurrentEnemy.Damage, new SpearUser().Damage);
+    }
 }
