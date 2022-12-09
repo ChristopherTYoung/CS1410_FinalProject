@@ -38,4 +38,16 @@ public class EnemyTests
         Enemy CurrentEnemy = new SpearUser();
         Assert.AreEqual(CurrentEnemy.Damage, new SpearUser().Damage);
     }
+
+    [Test]
+    public void EnemyDoesDamage()
+    {
+
+    }
+
+    [Test]
+    public void EnemyDoesNoDamage()
+    {
+        
+    }
 }
