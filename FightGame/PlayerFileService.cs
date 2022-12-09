@@ -4,11 +4,21 @@ public class PlayerFileService
 {
     public IEnumerable<IPlayer> ReadPlayerScoresFromFile()
     {
+        using (var reader = new StreamReader($"../Players/Leaderboard.csv"))
+        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+        {
+            var records = csv.GetRecords<Player>();
+        }
         return new List<IPlayer>();
     }
-    public void WritePlayerScoresToFile()
+    public void WritePlayerScoresToFile(IPlayer player)
     {
-
+        using (var writer = new StreamWriter($"../Players/Leaderboard.csv"))
+        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+        {
+            var players = new List<IPlayer>() { player };
+            csv.WriteRecords(players);
+        }
     }
     public IPlayer ReadPlayerSavedData(string filename)
     {

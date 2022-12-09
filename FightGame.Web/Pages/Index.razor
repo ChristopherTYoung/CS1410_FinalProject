@@ -160,6 +160,7 @@ else if (playerWins == false && roundIsOver)
     {
         file.WritePlayerSavedData(player);
         PlayerFileService.WriteInventorySavedData(player.Name, inventory);
+        file.WritePlayerScoresToFile(player);
         CreatedCharacter = false;
         UserInShop = false;
         roundIsOver = false;
