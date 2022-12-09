@@ -180,7 +180,7 @@ public class Game
         "What would you like to buy".PrintEachLetter();
         List<string> ItemsBought = new List<string>();
         var input = Console.ReadLine();
-        if (input == "Attack Boost" && Gold >= 10)
+        if (input == "Attack Boost")
         {
             Gold -= 10;
             ItemsBought.Add("AttackBoost");

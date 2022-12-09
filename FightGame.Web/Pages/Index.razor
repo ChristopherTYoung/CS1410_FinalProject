@@ -59,12 +59,12 @@
     <p>We have HealthBoost, AttackBoost, DodgeMoves, SpecialAttack and UltimateAttack</p>
     <p>@($"You have {this.player.Money} gold")</p>
     <p>What would you like to buy?</p>
-    <button type="button">DodgeMoves</button>
-    <button type="button">SpecialAttack</button>
-    <button type="button">UltimateAttack</button>
-    <button type="button">AttackBoost</button>
-    <button type="button">HealthBoost</button>
-    <button type="button">Nothing</button>
+    <button type="button" @onclick="@(() => Shop())>DodgeMoves</button>
+    <button type="button" @onclick="@(() => Shop())>SpecialAttack</button>
+    <button type="button" @onclick="@(() => Shop())>UltimateAttack</button>
+    <button type="button" @onclick="@(() => Shop())>AttackBoost</button>
+    <button type="button" @onclick="@(() => Shop())>Nothing</button>
+    <button type="button" @onclick="@(() => Shop())>HealthBoost</button>
 }
 else if (PlayerHealth <= 0)
 {
@@ -101,6 +101,7 @@ else if (PlayerHealth <= 0)
     private bool GameIsStillGoing { get; set; } = false;
     private string errorMessage { get; set; } = "";
     private bool DisplayMenu { get; set; } = false;
+    private int Gold { get; set; } = 0;
     private int EnemyHealth { get; set; }
     private int PlayerHealth { get; set; }
     private bool roundIsStillGoing { get; set; } = false;
@@ -176,51 +177,43 @@ else if (PlayerHealth <= 0)
         }
     }
 
-    @* public static List<string> Shop(int Gold)
-        {
-        "Welcome to the Shop".PrintEachLetter();
-        "We have quite a selection for you to choose from".PrintEachLetter();
-        "We have health and dodge potions, you can also upgrade your abilities".PrintEachLetter();
-        "What would you like to buy".PrintEachLetter();
+    private List<string> Shop()
+    {
         List<string> ItemsBought = new List<string>();
         var input = Console.ReadLine();
-        if (input == "Attack Boost" && Gold >= 10)
+        if (input == "Attack Boost")
         {
-        Gold -= 10;
-        ItemsBought.Add("AttackBoost");
+            Gold -= 10;
+            ItemsBought.Add("AttackBoost");
         }
 
         if (input == "HealthBoost")
         {
-        Gold -= 5;
-        ItemsBought.Add("Health Boost");
+            Gold -= 5;
+            ItemsBought.Add("Health Boost");
         }
         if (input == "DodgeMoves")
         {
-        Gold -= 5;
-        Inventory.Dodges++;
+            Gold -= 5;
+            Inventory.Dodges++;
         }
         if (input == "UltimateAttack")
         {
-        Gold -= 5;
-        Inventory.UltimateAttacks ++ ;
+            Gold -= 5;
+            Inventory.UltimateAttacks ++ ;
         }
         if (input == "SpecialAttack")
         {
-        Gold -= 5;
-        Inventory.SpecialAttacks ++ ;
+            Gold -= 5;
+            Inventory.SpecialAttacks ++ ;
         }
         if (input == "Nothing")
         {
-        return ItemsBought;
+            return ItemsBought;
         }
-        //Make items a base value. Enemy will drop 10 gold each. After each encounter of the shop both enemy gold and Shop
-        prices increase by 1/4 their original.
-        //Potions will be 10 gold each (base value), upgrades will be (20 base value)
-
+        
         return ItemsBought;
-        } *@
-
+    }
 }
 
 @* public static void Round(IPlayer player)
