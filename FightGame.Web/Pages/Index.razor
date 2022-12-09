@@ -45,6 +45,7 @@
     if (EnemyHealth <= 0)
     {
         <p>Player has won!</p>
+
     }
     else if (PlayerHealth <= 0)
     {
@@ -54,17 +55,21 @@
 @if (EnemyHealth <= 0)
 {
     <p>Player has won!</p>
+}
+@if (UserInShop)
+{
     <p>Welcome to the Shop</p>
     <p>We have quite a selection for you to choose from.</p>
     <p>We have HealthBoost, AttackBoost, DodgeMoves, SpecialAttack and UltimateAttack</p>
     <p>@($"You have {this.player.Money} gold")</p>
     <p>What would you like to buy?</p>
-    <button type="button" @onclick="@(() => Shop())>DodgeMoves</button>
-    <button type="button" @onclick="@(() => Shop())>SpecialAttack</button>
-    <button type="button" @onclick="@(() => Shop())>UltimateAttack</button>
-    <button type="button" @onclick="@(() => Shop())>AttackBoost</button>
-    <button type="button" @onclick="@(() => Shop())>Nothing</button>
-    <button type="button" @onclick="@(() => Shop())>HealthBoost</button>
+    <button type="button" @onclick= "@(() => BuyItem("DodgeMoves"))">DodgeMoves</button>
+    <button type="button" @onclick= "@(() => BuyItem("SpecialAttack"))">SpecialAttack</button>
+    <button type="button" @onclick= "@(() => BuyItem("UltimateAttack"))">UltimateAttack</button>
+    <button type="button" @onclick= "@(() => BuyItem("AttackBoost"))">AttackBoost</button>
+    <button type="button" @onclick= "@(() => BuyItem("HealthBoost"))">HealthBoost</button>
+    <button type="button" @onclick="PlayGame">Continue</button>
+    <button type="button" @onclick="QuitGame">Quit</button>
 }
 else if (PlayerHealth <= 0)
 {
@@ -101,8 +106,8 @@ else if (PlayerHealth <= 0)
     private bool GameIsStillGoing { get; set; } = false;
     private string errorMessage { get; set; } = "";
     private bool DisplayMenu { get; set; } = false;
-    private int Gold { get; set; } = 0;
     private int EnemyHealth { get; set; }
+    private bool UserInShop { get; set; } = false;
     private int PlayerHealth { get; set; }
     private bool roundIsStillGoing { get; set; } = false;
     private bool playerWins { get; set; } = false;
@@ -131,18 +136,23 @@ else if (PlayerHealth <= 0)
         CreatedCharacter = true;
         Menu();
     }
+
     private void Menu()
     {
         DisplayMenu = true;
+
     }
+
     private void PlayGame()
     {
         DisplayMenu = false;
+        UserInShop = false;
         enemy = Enemy.GetEnemy();
         roundIsStillGoing = true;
         EnemyHealth = enemy.Health;
         PlayerHealth = player.Health;
     }
+
     private void QuitGame()
     {
         file.WritePlayerSavedData(player);
@@ -168,6 +178,7 @@ else if (PlayerHealth <= 0)
             player.Money = player.Money + 5;
             playerWins = true;
             roundIsStillGoing = false;
+            OpenShop();
         }
         else if (PlayerHealth <= 0)
         {
@@ -177,39 +188,45 @@ else if (PlayerHealth <= 0)
         }
     }
 
-    private List<string> Shop()
+    private void OpenShop()
+    {
+        roundIsStillGoing = false;
+        UserInShop = true;
+    }
+
+    private List<string> BuyItem(string input)
     {
         List<string> ItemsBought = new List<string>();
-        var input = Console.ReadLine();
-        if (input == "Attack Boost")
+        if (input == "Attack Boost" && player.Money >= 10)
         {
-            Gold -= 10;
+            player.Money -= 10;
             ItemsBought.Add("AttackBoost");
         }
 
-        if (input == "HealthBoost")
+        if (input == "HealthBoost" && player.Money >= 10)
         {
-            Gold -= 5;
+            player.Money -= 10;
             ItemsBought.Add("Health Boost");
         }
-        if (input == "DodgeMoves")
+        if (input == "DodgeMoves" && player.Money >= 5)
         {
-            Gold -= 5;
+            player.Money -= 5;
             Inventory.Dodges++;
         }
-        if (input == "UltimateAttack")
+        if (input == "UltimateAttack" && player.Money >= 5)
         {
-            Gold -= 5;
+            player.Money -= 5;
             Inventory.UltimateAttacks ++ ;
         }
-        if (input == "SpecialAttack")
+        if (input == "SpecialAttack" && player.Money >= 5)
         {
-            Gold -= 5;
+            player.Money -= 5;
             Inventory.SpecialAttacks ++ ;
         }
-        if (input == "Nothing")
+
+        if (player.Money == 0)
         {
-            return ItemsBought;
+            PlayGame();
         }
         
         return ItemsBought;
