@@ -31,6 +31,7 @@ public class PlayerTests
         Enemy enemy = new SkeletonKnight();
         Assert.True(Game.PlayerTurn(player, enemy, "Normal", new List<string>() { }) >= 2);
     }
+    
     [Test]
     public void TestPlayerAttack2()
     {
@@ -38,6 +39,7 @@ public class PlayerTests
         Enemy enemy = new SkeletonKnight();
         Assert.True(Game.PlayerTurn(player, enemy, "Special", new List<string>() { }) >= 4);
     }
+
     [Test]
     public void TestPlayerAttack3()
     {
@@ -45,6 +47,7 @@ public class PlayerTests
         Enemy enemy = new SkeletonKnight();
         Assert.True(Game.PlayerTurn(player, enemy, "Ultimate", new List<string>() { }) >= 6);
     }
+
     [Test]
     public void TestDodge()
     {
@@ -52,9 +55,30 @@ public class PlayerTests
         Enemy enemy = new SkeletonKnight();
         Assert.True(Game.PlayerTurn(player, enemy, "Dodge", new List<string>() { }) == 0);
     }
+
     [Test]
     public void PlayersDamageIsTooLow()
     {
+        List<string> ItemsBought = new List<string>();
+        Player player = new Archer("Chris");
+        Enemy enemy = new SkeletonKnight();
+        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought));
+    }
+
+    [Test]
+    public void PlayersDoesDamageWithShopItems()
+    {
+        //Damage is higher
+        List<string> ItemsBought = new List<string>();
+        Player player = new Archer("Chris");
+        Enemy enemy = new SkeletonKnight();
+        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought));
+    }
+
+    [Test]
+     public void PlayersDoesDamageWithShopItems2()
+    {
+        //health is larger
         List<string> ItemsBought = new List<string>();
         Player player = new Archer("Chris");
         Enemy enemy = new SkeletonKnight();
