@@ -2,12 +2,12 @@
 
 <PageTitle>FightGame</PageTitle>
 
-<p>Welcome to Fight Game.</p>
+<h1>Welcome to Fight Game.</h1>
 <p>First, pick your username. If the username you entered already exists, then it will start you at your last saved
     game. Select a class if this is your first time playing. The classes to choose from are Archer, Assassin,
     Executioner, Knight, Mage, Samurai, Summoner, and the Warrior</p>
 <p>Name</p><input @bind="UserInputName" />
-<p>Class</p><input @bind="UserInputClassType" /><button type="reset" @onclick="CreateCharacter">Submit</button>
+<p>Class</p><input @bind="UserInputClassType" /><button type="reset" class="btn-primary" @onclick="CreateCharacter">Submit</button>
 <hr>
 @if (CreatedCharacter)
 {
@@ -30,18 +30,18 @@
 }
 @if (DisplayMenu)
 {
-    <button type="button" @onclick="PlayGame">Play</button>
-    <button type="button" @onclick="QuitGame">Quit</button>
+    <button type="button" class="btn-primary" @onclick="PlayGame">Play</button>
+    <button type="button" class="btn-primary" @onclick="QuitGame">Quit</button>
 }
 @if (roundIsStillGoing)
 {
     <p>You are facing @enemy.Name</p>
     <p>Your Health: @PlayerHealth Enemy Health: @EnemyHealth</p>
     <p>Choose an attack</p>
-    <button type="button" @onclick="@(() => TakeTurn("Dodge", player))">Dodge</button>
-    <button type="button" @onclick="@(() => TakeTurn("Normal", player))">Normal</button>
-    <button type="button" @onclick="@(() => TakeTurn("Special", player))">Special</button>
-    <button type="button" @onclick="@(() => TakeTurn("Ultimate", player))">Ultimate</button>
+    <button type="button" class="btn-primary" @onclick="@(() => TakeTurn("Dodge", player))">Dodge</button>
+    <button type="button" class="btn-primary" @onclick="@(() => TakeTurn("Normal", player))">Normal</button>
+    <button type="button" class="btn-primary" @onclick="@(() => TakeTurn("Special", player))">Special</button>
+    <button type="button" class="btn-primary" @onclick="@(() => TakeTurn("Ultimate", player))">Ultimate</button>
     if (EnemyHealth <= 0)
     {
         <p>Player has won!</p>
