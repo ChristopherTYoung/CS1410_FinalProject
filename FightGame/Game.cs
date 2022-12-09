@@ -112,7 +112,7 @@ public class Game
         else if (enemy.Damage > player.Defense && doesCrit == false)
             return (enemy.Damage - player.Defense);
         else if (enemy.Damage < player.Defense)
-            return 0;
+            return enemy.Damage;
         return 0;
     }
     int Gold = 0;
