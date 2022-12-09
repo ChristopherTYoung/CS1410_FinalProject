@@ -1,4 +1,3 @@
-namespace FightGame.Test;
 
 public class PlayerTests
 {
@@ -11,7 +10,6 @@ public class PlayerTests
         Assert.AreEqual(10, testPlayer.Defense);
         Assert.AreEqual("Chris", testPlayer.Name);
     }
-
     [Test]
     public void ClassExceptionIsThrow()
     {
@@ -25,9 +23,7 @@ public class PlayerTests
             Assert.AreEqual(0, testPlayer.Damage);
             Assert.AreEqual(0, testPlayer.Defense);
         }
-
     }
-
     [Test]
     public void TestPlayerAttack()
     {
