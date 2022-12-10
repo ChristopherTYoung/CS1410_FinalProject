@@ -1,3 +1,5 @@
+//REQUIREMENT #6 inheritance - Character Types inherit from Player.
+//The Players stats will be set appropriately based on what Character Type they choose.
 public class Archer : Player
 {
     public Archer(string name)

@@ -1,4 +1,8 @@
 # FightGame
+Welcome to our final project FightGame. Our main driver is a blazor UI. You will first be instructed to enter a class and a username. You can use that username later to pick up a saved game. You will then be given the option to play or quit. When you play, it will start you off against one our enemies. It will
+randomly assign an enemy to fight you. You will have the option to Dodge, do a Normal Attack, do n Special Attack, or do a Ultimate Attack, but be careful because you only have so many dodges, specials, and ultimates.
+To run the tests, use dotnet test. We have multiple tests testing for the players attacks, getting a player, enemy attacks, getting an enemy, the shop, etc. 
+The main idea of how this works is that you have a player class and different character types that you can choose from. Those will decide what stats you have such as Damage and Defense. We have a game class that has some of our main functions such as selecting a character type, playerturns, enemy attacks, etc. There is also an inventory class that will keep track of how many ultimates, specials, and dodges you have. The inventory will be displayed so you'll know how many you have. After you win a game, our shop function will open giving you options for things to buy. You can buy more ultimates, specials, and dodges there.
 
 ## Player - Chris
     -Player has a base Damage, Defense, Health, and Weapon based on class. Stats can be improved later in the game

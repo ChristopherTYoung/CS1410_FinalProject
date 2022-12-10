@@ -1,7 +1,11 @@
 
+// REQUIREMENT 1 a Class Definition
 public class Game
 {
-
+    /// <summary>
+    /// SelectClass will take in an input class and name. This is where the user chooses a Character Type. If the class is not valid, it will throw an exception
+    /// </summary>
+    //REQUIREMENT #12 - a Static Member Function
     public static Player SelectClass(string inputClass, string inputName)
     {
         Game game = new Game();
@@ -20,6 +24,10 @@ public class Game
         };
         return player;
     }
+    /// <summary>
+    /// PlayerTurn decides how much damage the player does based on their damage subtracting the enemy defense, their move, the critical hit damage, and attack boosts
+    /// If their damage is too low, it will do the base damage without any critical damage, damage multipliers, or attack boosts
+    /// </summary>
     public static int PlayerTurn(IPlayer player, Enemy enemy, string input, List<string> ItemsBought, IInventory inventory)
     {
         Random rnd = new Random();
@@ -105,6 +113,9 @@ public class Game
 
     }
 
+    /// <summary>
+    /// EnemyAttack decides how much damage the enemy does based on their damage subtracting the player defense and the critical hit damage
+    /// </summary>
     public static int EnemyAttack(IPlayer player, Enemy enemy)
     {
         Random rnd = new Random();

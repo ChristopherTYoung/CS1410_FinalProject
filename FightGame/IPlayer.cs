@@ -1,3 +1,6 @@
+//REQUIREMENT #13 - an Interface
+// We use an interface here. Our player class inherits from IPlayer
+// We user IPlayer when we are reading and writing to files
 public interface IPlayer
 {
     [Index(0)]

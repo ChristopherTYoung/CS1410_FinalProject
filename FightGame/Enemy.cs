@@ -8,7 +8,9 @@ public abstract class Enemy
 
 
     // Enemy fought will be randomly generated
-
+    /// <summary>
+    /// GetEnemy will return a random enemy. The enemy chosen will be random each game.
+    /// </summary>
     public static Enemy GetEnemy()
     {
         Random random = new Random();

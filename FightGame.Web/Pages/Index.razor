@@ -7,7 +7,8 @@
     game. Select a class if this is your first time playing. The classes to choose from are Archer, Assassin,
     Executioner, Knight, Mage, Samurai, Summoner, and the Warrior</p>
 <p>Name</p><input @bind="UserInputName" />
-<p>Class</p><input @bind="UserInputClassType" /><button type="reset" class="btn-primary" @onclick="CreateCharacter">Submit</button>
+<p>Class</p><input @bind="UserInputClassType" /><button type="reset" class="btn-primary"
+    @onclick="CreateCharacter">Submit</button>
 <hr>
 @if (CreatedCharacter)
 {
@@ -35,6 +36,7 @@
 }
 @if (roundIsStillGoing)
 {
+    <p>@inventory.ToString()</p>
     <p>You are facing @enemy.Name</p>
     <p>Your Health: @PlayerHealth Enemy Health: @EnemyHealth</p>
     <p>Choose an attack</p>
@@ -115,6 +117,7 @@ else if (playerWins == false && roundIsOver)
     private bool playerWins { get; set; } = false;
     private bool PlayersTurn { get; set; } = false;
     private bool roundIsOver { get; set; } = false;
+    private int EnemiesKilled { get; set; } = 0;
     private void CreateCharacter()
     {
         errorMessage = "";
@@ -123,13 +126,18 @@ else if (playerWins == false && roundIsOver)
             GameIsStillGoing = true;
             player = file.ReadPlayerSavedData(UserInputName);
             inventory = PlayerFileService.ReadInventorySavedData(UserInputName);
+            Menu();
         }
         else
         {
+            // REQUIREMENT #9 - Throwing and Catching an Exception
+            // Here we catch an exception if the input a user enters
+            // is invalid. The user will not be able to move on until they enter a correct value
             try
             {
                 player = Game.SelectClass(UserInputClassType, UserInputName);
                 GameIsStillGoing = true;
+                Menu();
             }
             catch (Exception)
             {
@@ -139,7 +147,6 @@ else if (playerWins == false && roundIsOver)
             }
         }
         CreatedCharacter = true;
-        Menu();
     }
 
     private void Menu()
@@ -156,7 +163,7 @@ else if (playerWins == false && roundIsOver)
         roundIsStillGoing = true;
         EnemyHealth = enemy.Health;
         PlayerHealth = player.Health;
-        if(ItemsBought.Contains("Health Boost"))
+        if (ItemsBought.Contains("Health Boost"))
             PlayerHealth += 10;
     }
 
@@ -164,7 +171,9 @@ else if (playerWins == false && roundIsOver)
     {
         file.WritePlayerSavedData(player);
         PlayerFileService.WriteInventorySavedData(player.Name, inventory);
-        file.WritePlayerScoresToFile(player);
+        Score<string, int> score = new Score<string, int>(player.Name, EnemiesKilled, player.Money);
+        var scores = file.ReadPlayerScoresFromFile();
+        file.WritePlayerScoresToFile(score, scores);
         CreatedCharacter = false;
         UserInShop = false;
         roundIsOver = false;
@@ -175,6 +184,9 @@ else if (playerWins == false && roundIsOver)
     {
         errorMessage = "";
         Game game = new Game();
+        //REQUIREMENT #9 - Throwing and Catching an Exception
+        // Here we also throw and catch an exception. You can't use
+        // ultimate attacks if you don't have any
         try
         {
             var damage = Game.PlayerTurn(player, enemy, move, ItemsBought, inventory);
@@ -195,6 +207,7 @@ else if (playerWins == false && roundIsOver)
             playerWins = true;
             roundIsOver = true;
             roundIsStillGoing = false;
+            EnemiesKilled += 1;
             OpenShop();
         }
         else if (PlayerHealth <= 0)
@@ -214,7 +227,10 @@ else if (playerWins == false && roundIsOver)
 
     private List<string> BuyItem(string input)
     {
-        List<string> ItemsBought = new List<string>();
+        //REQUIREMENT #15 - Built-in Generic Collection Type
+        //We use a List of strings here. The player can buy
+        //Items like attack boosts and health boosts and they will be added to the list
+        ItemsBought = new List<string>();
         if (input == "Attack Boost" && player.Money >= 10)
         {
             player.Money -= 10;
