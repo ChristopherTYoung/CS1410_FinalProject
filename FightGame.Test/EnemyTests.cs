@@ -42,12 +42,21 @@ public class EnemyTests
     [Test]
     public void EnemyDoesDamage()
     {
-
+        IInventory inventory = new Inventory();
+        List<string> ItemsBought = new List<string>();
+        Player player = new Archer("Chris");
+        Enemy enemy = new SkeletonKnight();
+        Assert.True(player.Health <= Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory));
     }
 
     [Test]
     public void EnemyDoesNoDamage()
     {
-        
+          IInventory inventory = new Inventory();
+        List<string> ItemsBought = new List<string>();
+        Player player = new Archer("Chris");
+        Enemy enemy = new SkeletonKnight();
+        var playerHealth = Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory);
+        Assert.True(playerHealth == 100);
     }
 }
