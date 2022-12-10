@@ -33,30 +33,23 @@ public class EnemyTests
     }
 
     [Test]
-    public void ListContainsShopItem()
-    {
-        Enemy CurrentEnemy = new SpearUser();
-        Assert.AreEqual(CurrentEnemy.Damage, new SpearUser().Damage);
-    }
-
-    [Test]
     public void EnemyDoesDamage()
     {
         IInventory inventory = new Inventory();
         List<string> ItemsBought = new List<string>();
         Player player = new Archer("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.True(player.Health <= Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory));
+        Assert.True(Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory) <= player.Health);
     }
 
     [Test]
-    public void EnemyDoesNoDamage()
+    public void EnemyDoesBaseDamage()
     {
-          IInventory inventory = new Inventory();
+        IInventory inventory = new Inventory();
         List<string> ItemsBought = new List<string>();
-        Player player = new Archer("Chris");
-        Enemy enemy = new SkeletonKnight();
-        var playerHealth = Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory);
-        Assert.True(playerHealth == 100);
+        Player player = new Knight("Chris");
+        Enemy enemy = new Witch();
+        var DamageDone = Game.EnemyAttack(player, enemy);
+        Assert.AreEqual(14, DamageDone);
     }
 }

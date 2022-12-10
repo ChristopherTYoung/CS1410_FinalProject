@@ -71,16 +71,6 @@ public class PlayerTests
     }
 
     [Test]
-    public void PlayersDoesDamageWithShopItems()
-    {
-        //Damage is higher
-        IInventory inventory = new Inventory();
-        List<string> ItemsBought = new List<string>() { "Attack Boost" };
-        Player player = new Executioner("Chris");
-        Enemy enemy = new SkeletonKnight();
-        Assert.AreEqual(player.Damage + 2, Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory));
-    }
-    [Test]
     public void CanReadPlayerDataFromFiles()
     {
         var dir = Path.GetDirectoryName(typeof(Inventory).Assembly.Location);
