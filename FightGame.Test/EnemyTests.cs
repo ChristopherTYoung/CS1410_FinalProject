@@ -52,4 +52,25 @@ public class EnemyTests
         var DamageDone = Game.EnemyAttack(player, enemy);
         Assert.AreEqual(14, DamageDone);
     }
+
+    [Test]
+    public void EnemyDoesBaseDamage2()
+    {
+        IInventory inventory = new Inventory();
+        List<string> ItemsBought = new List<string>();
+        Player player = new Knight("Chris");
+        Enemy enemy = new SkeletonKnight();
+        var DamageDone = Game.EnemyAttack(player, enemy);
+        Assert.AreEqual(15, DamageDone);
+    }
+
+    [Test]
+    public void GetEnemyBaseDefense()
+    {
+        IInventory inventory = new Inventory();
+        List<string> ItemsBought = new List<string>();
+        Player player = new Knight("Chris");
+        Enemy enemy = new SkeletonKnight();
+        Assert.AreEqual(15, enemy.Defense);
+    }
 }

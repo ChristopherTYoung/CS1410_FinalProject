@@ -140,7 +140,7 @@ public class PlayerTests
         Assert.AreEqual(3, inventory.SpecialAttacks);
         Assert.AreEqual(1, inventory.Dodges);
     }
-    
+
     [Test]
     public void CanReadScoreDataFromFiles()
     {
@@ -153,6 +153,16 @@ public class PlayerTests
         Assert.AreEqual(0, score.EnemiesKilled);
         Assert.AreEqual(0, score.Money);
         Assert.AreEqual("Bobby", score.NameOfPlayer);
+    }
+
+    [Test]
+    public void GetPlayerBaseDefense()
+    {
+        IInventory inventory = new Inventory();
+        List<string> ItemsBought = new List<string>();
+        Player player = new Knight("Chris");
+        Enemy enemy = new SkeletonKnight();
+        Assert.AreEqual(20, player.Defense);
     }
 
     // [Test]
