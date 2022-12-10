@@ -75,20 +75,21 @@ public class PlayerTests
     {
         //Damage is higher
         IInventory inventory = new Inventory();
-        List<string> ItemsBought = new List<string>();
-        Player player = new Archer("Chris");
+        List<string> ItemsBought = new List<string> ("Attack Boost");
+        Player player = new Executioner("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory));
+        Assert.AreEqual(player.Damage + 2, Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory));
     }
 
     [Test]
-    public void PlayersDoesDamageWithShopItems2()
+    public void PlayersUseShopItems()
     {
         //health is larger
         IInventory inventory = new Inventory();
-        List<string> ItemsBought = new List<string>();
+        List<string> ItemsBought = new List<string>("Health Boost");
         Player player = new Archer("Chris");
         Enemy enemy = new SkeletonKnight();
-        Assert.AreEqual(14, Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory));
+        var newHealth = Game.BuyItem("HealthBoost");
+        Assert.AreEqual(player.Health + 2, BuyItem("HealthBoost"));
     }
 }
