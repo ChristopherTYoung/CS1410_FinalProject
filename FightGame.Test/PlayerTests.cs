@@ -71,7 +71,38 @@ public class PlayerTests
         Enemy enemy = new SkeletonKnight();
         Assert.True(Game.PlayerTurn(player, enemy, "Dodge", new List<string>() { }, inventory) == 0);
     }
-
+    [Test]
+    public void PlayerIsOutOfUltimateAttacks()
+    {
+        IInventory inventory = new Inventory() { UltimateAttacks = 0 };
+        Player player = new Knight("Bob");
+        Enemy enemy = new SkeletonKnight();
+        int damage = 0;
+        try
+        {
+            damage = Game.PlayerTurn(player, enemy, "Ultimate", new List<string>() { }, inventory);
+        }
+        catch(Exception)
+        {
+            Assert.AreEqual(0, damage);
+        }
+    }
+    [Test]
+    public void PlayerIsOutOfSpecialAttacks()
+    {
+        IInventory inventory = new Inventory() { SpecialAttacks = 0 };
+        Player player = new Knight("Bob");
+        Enemy enemy = new SkeletonKnight();
+        int damage = 0;
+        try
+        {
+            damage = Game.PlayerTurn(player, enemy, "Special", new List<string>() { }, inventory);
+        }
+        catch(Exception)
+        {
+            Assert.AreEqual(0, damage);
+        }
+    }
     [Test]
     public void PlayersDamageIsTooLow()
     {
