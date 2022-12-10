@@ -75,21 +75,60 @@ public class PlayerTests
     {
         //Damage is higher
         IInventory inventory = new Inventory();
-        List<string> ItemsBought = new List<string> ("Attack Boost");
+        List<string> ItemsBought = new List<string>() { "Attack Boost" };
         Player player = new Executioner("Chris");
         Enemy enemy = new SkeletonKnight();
         Assert.AreEqual(player.Damage + 2, Game.PlayerTurn(player, enemy, "Normal", ItemsBought, inventory));
     }
-
     [Test]
-    public void PlayersUseShopItems()
+    public void CanReadPlayerDataFromFiles()
     {
-        //health is larger
-        IInventory inventory = new Inventory();
-        List<string> ItemsBought = new List<string>("Health Boost");
-        Player player = new Archer("Chris");
-        Enemy enemy = new SkeletonKnight();
-        var newHealth = Game.BuyItem("HealthBoost");
-        Assert.AreEqual(player.Health + 2, BuyItem("HealthBoost"));
+        var dir = Path.GetDirectoryName(typeof(Inventory).Assembly.Location);
+        var newdir = Path.Combine(dir, "../../../../Players");
+        Environment.CurrentDirectory = newdir;
+        PlayerFileService file = new PlayerFileService();
+        var player = file.ReadPlayerSavedData("Bobby");
+
+        Assert.AreEqual(14, player.Damage);
+        Assert.AreEqual(10, player.Defense);
+        Assert.AreEqual("Bobby", player.Name);
     }
+    [Test]
+    public void CanReadInventoryDataFromFiles()
+    {
+        var dir = Path.GetDirectoryName(typeof(Player).Assembly.Location);
+        var newdir = Path.Combine(dir, "../../../../Players");
+        Environment.CurrentDirectory = newdir;
+        PlayerFileService file = new PlayerFileService();
+        var inventory = PlayerFileService.ReadInventorySavedData("Bobby");
+
+        Assert.AreEqual(1, inventory.UltimateAttacks);
+        Assert.AreEqual(3, inventory.SpecialAttacks);
+        Assert.AreEqual(1, inventory.Dodges);
+    }
+    [Test]
+    public void CanReadScoreDataFromFiles()
+    {
+        var dir = Path.GetDirectoryName(typeof(Score<string, int>).Assembly.Location);
+        var newdir = Path.Combine(dir, "../../../../Players");
+        Environment.CurrentDirectory = newdir;
+        PlayerFileService file = new PlayerFileService();
+        var score = file.ReadPlayerScoresFromFile("Bobby");
+
+        Assert.AreEqual(0, score.EnemiesKilled);
+        Assert.AreEqual(0, score.Money);
+        Assert.AreEqual("Bobby", score.NameOfPlayer);
+    }
+
+    // [Test]
+    // public void PlayersUseShopItems()
+    // {
+    //     //health is larger
+    //     IInventory inventory = new Inventory();
+    //     List<string> ItemsBought = new List<string>() { "Health Boost" };
+    //     Player player = new Archer("Chris");
+    //     Enemy enemy = new SkeletonKnight();
+    //     var newHealth = Game.BuyItem("HealthBoost");
+    //     Assert.AreEqual(player.Health + 2, BuyItem("HealthBoost"));
+    // }
 }

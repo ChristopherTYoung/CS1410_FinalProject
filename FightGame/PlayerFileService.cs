@@ -5,31 +5,30 @@ global using System.Globalization;
 // This is the PlayerFileService which saves player data into CSV files
 public class PlayerFileService
 {
-    public IEnumerable<Score<string, int>> ReadPlayerScoresFromFile()
+    /// <summary>
+    /// ReadPlayerScoresFromFile reads a players score from a file. It takes in a filename
+    /// and will return a score which is of our generic type IScore
+    /// </summary>
+    public IScore<string, int> ReadPlayerScoresFromFile(string filename)
     {
-        using (var reader = new StreamReader("../Players/Leaderboard.csv"))
+        using (var reader = new StreamReader($"../Players/{filename}Score.csv"))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
-            csv.Read();
-            var scores = new List<Score<string, int>>();
-            var scoreList = csv.GetRecords<Score<string, int>>();
-            foreach(var score in scoreList)
-            {
-                scores.Append(score);
-            }
-            return scores;
+            var scores = csv.GetRecords<Score<string, int>>();
+            return scores.First();
         }
     }
-    public void WritePlayerScoresToFile(Score<string, int> score, IEnumerable<Score<string, int>> scores)
+    /// <summary>
+    /// WritePlayerScoresToFile writes the players scores to a file. It takes
+    /// in a score which is of our own generic type
+    /// </summary>
+    public void WritePlayerScoresToFile(IScore<string, int> score)
     {
-        using (var writer = new StreamWriter("../Players/Leaderboard.csv"))
+        using (var writer = new StreamWriter($"../Players/{score.NameOfPlayer}Score.csv"))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
-            scores.Append(score);
-            foreach(var s in scores)
-            {
-            csv.WriteRecord<Score<string, int>>(s);
-            }
+            var scores = new List<IScore<string, int>>() { score };
+            csv.WriteRecords<IScore<string, int>>(scores);
         }
     }
     /// <summary>
@@ -40,6 +39,9 @@ public class PlayerFileService
         using (var reader = new StreamReader($"../Players/{filename}.csv"))
         using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
         {
+            // REQUIREMENT #15 - built-in generic collection type
+            // Creates an IEnumerable when it gets the records from the csv
+            // Then it returns the first element
             var record = csv.GetRecords<Player>();
             return record.First();
         }

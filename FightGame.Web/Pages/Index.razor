@@ -19,6 +19,7 @@
     if (File.Exists($"../Players/{UserInputName}.csv"))
     {
         <p>@player.ToString()</p>
+        <p>@score</p>
     }
     else
     {
@@ -84,6 +85,7 @@ else if (playerWins == false && roundIsOver)
 @code {
     IPlayer player = new Player();
     IInventory inventory = new Inventory();
+    IScore<string, int> score = new Score<string, int>();
     Game game = new Game();
     PlayerFileService file = new PlayerFileService();
     private Enemy enemy { get; set; }
@@ -117,7 +119,10 @@ else if (playerWins == false && roundIsOver)
     private bool playerWins { get; set; } = false;
     private bool PlayersTurn { get; set; } = false;
     private bool roundIsOver { get; set; } = false;
-    private int EnemiesKilled { get; set; } = 0;
+    private int Kills { get; set; } = 0;
+
+    // CreateCharacter will create a new Player object and assign the player attributes
+    // Will check if there is a saved game with the username given
     private void CreateCharacter()
     {
         errorMessage = "";
@@ -149,11 +154,14 @@ else if (playerWins == false && roundIsOver)
         CreatedCharacter = true;
     }
 
+    // Opens the menu. Player will have option to play or quit game.
     private void Menu()
     {
         DisplayMenu = true;
     }
 
+    // PlayGame starts a game. It will create a random enemy and it will set the Player and Enemy health
+    // It also checks for a Health Boost
     private void PlayGame()
     {
         roundIsOver = false;
@@ -167,19 +175,22 @@ else if (playerWins == false && roundIsOver)
             PlayerHealth += 10;
     }
 
+    // The QuitGame function quits the game. It will save the players data into csv's
+    // The player will be able to start where they left off last time when they play using
+    // the same username
     private void QuitGame()
     {
         file.WritePlayerSavedData(player);
         PlayerFileService.WriteInventorySavedData(player.Name, inventory);
-        Score<string, int> score = new Score<string, int>(player.Name, EnemiesKilled, player.Money);
-        var scores = file.ReadPlayerScoresFromFile();
-        file.WritePlayerScoresToFile(score, scores);
+        file.WritePlayerScoresToFile(score);
         CreatedCharacter = false;
         UserInShop = false;
         roundIsOver = false;
         DisplayMenu = false;
     }
 
+    // The TakeTurn function waits for a button to be clicked. It will then
+    // take the input and use it to calculate the players damage, etc.
     private void TakeTurn(string move, IPlayer player)
     {
         errorMessage = "";
@@ -207,7 +218,8 @@ else if (playerWins == false && roundIsOver)
             playerWins = true;
             roundIsOver = true;
             roundIsStillGoing = false;
-            EnemiesKilled += 1;
+            score.EnemiesKilled += 1;
+            score.Money += 5;
             OpenShop();
         }
         else if (PlayerHealth <= 0)
@@ -219,6 +231,8 @@ else if (playerWins == false && roundIsOver)
         }
     }
 
+    // The OpenShop function opens the shop up. It will be called when the player wins
+    // a game
     private void OpenShop()
     {
         roundIsStillGoing = false;
