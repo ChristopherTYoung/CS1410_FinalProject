@@ -10,6 +10,17 @@ public class PlayerTests
         Assert.AreEqual(10, testPlayer.Defense);
         Assert.AreEqual("Chris", testPlayer.Name);
     }
+
+    [Test]
+    public void CanCreatePlayer2()
+    {
+        Player testPlayer = Game.SelectClass("Knight", "Happy");
+
+        Assert.AreEqual(17, testPlayer.Damage);
+        Assert.AreEqual(20, testPlayer.Defense);
+        Assert.AreEqual("Happy", testPlayer.Name);
+    }
+
     [Test]
     public void ClassExceptionIsThrow()
     {
@@ -24,6 +35,7 @@ public class PlayerTests
             Assert.AreEqual(0, testPlayer.Defense);
         }
     }
+
     [Test]
     public void TestPlayerAttack()
     {
@@ -83,6 +95,7 @@ public class PlayerTests
         Assert.AreEqual(10, player.Defense);
         Assert.AreEqual("Bobby", player.Name);
     }
+
     [Test]
     public void CanReadInventoryDataFromFiles()
     {
@@ -96,6 +109,7 @@ public class PlayerTests
         Assert.AreEqual(3, inventory.SpecialAttacks);
         Assert.AreEqual(1, inventory.Dodges);
     }
+    
     [Test]
     public void CanReadScoreDataFromFiles()
     {

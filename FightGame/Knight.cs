@@ -1,4 +1,3 @@
-
 public class Knight : Player
 {
     public Knight(string name)
